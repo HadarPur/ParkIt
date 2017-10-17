@@ -13,12 +13,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/mybutton"
-        android:text="find parking space"
-        android:textStyle="italic"
         android:backgroundTint="@color/colorAccent"
+        android:fontFamily="serif"
+        android:text="find parking space"
         android:textColor="@android:color/white"
-        android:textSize="20dp" />
-
+        android:textSize="20dp"
+        android:textStyle="bold" />
     <Button
         android:id="@+id/button2"
         android:layout_width="300dp"
@@ -26,13 +26,13 @@
         android:layout_alignStart="@+id/button1"
         android:layout_below="@+id/button1"
         android:layout_marginTop="35dp"
-        android:text="find my car"
-        android:textStyle="italic"
         android:background="@drawable/mybutton"
         android:backgroundTint="@color/colorAccent"
+        android:fontFamily="serif"
+        android:text="find my car"
         android:textColor="@android:color/white"
-        android:textSize="20dp" />
-
+        android:textSize="20dp"
+        android:textStyle="bold" />
     <Button
         android:id="@+id/button3"
         android:layout_width="300dp"
@@ -41,10 +41,11 @@
         android:layout_below="@+id/button2"
         android:layout_marginTop="40dp"
         android:background="@drawable/mybutton"
-        android:text="statistics"
-        android:textStyle="italic"
         android:backgroundTint="@color/colorAccent"
+        android:fontFamily="serif"
+        android:text="statistics"
         android:textColor="@android:color/white"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
 </RelativeLayout>
