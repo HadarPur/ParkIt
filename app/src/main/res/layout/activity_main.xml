@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/colorAccent"
+        android:background="@drawable/mybutton"
         android:text="find parking space"
+        android:textStyle="italic"
+        android:backgroundTint="@color/colorAccent"
         android:textColor="@android:color/white"
         android:textSize="20dp" />
 
@@ -24,8 +26,10 @@
         android:layout_alignStart="@+id/button1"
         android:layout_below="@+id/button1"
         android:layout_marginTop="35dp"
-        android:background="@color/colorAccent"
         android:text="find my car"
+        android:textStyle="italic"
+        android:background="@drawable/mybutton"
+        android:backgroundTint="@color/colorAccent"
         android:textColor="@android:color/white"
         android:textSize="20dp" />
 
@@ -36,8 +40,10 @@
         android:layout_alignStart="@+id/button2"
         android:layout_below="@+id/button2"
         android:layout_marginTop="40dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/mybutton"
         android:text="statistics"
+        android:textStyle="italic"
+        android:backgroundTint="@color/colorAccent"
         android:textColor="@android:color/white"
         android:textSize="20dp" />
 
