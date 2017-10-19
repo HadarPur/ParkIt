@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button statistics, findMyCar, findParkingSpace;
+    Button statistics, findMyCar, findParkingSpace, aboutAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +23,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findViews () {
-        //Typeface type = Typeface.createFromAsset(getAssets(), "font/georgiabolditalic.ttf");
         findParkingSpace=(Button) findViewById(R.id.button1);
-        //findParkingSpace.setTypeface(type);
         findMyCar=(Button) findViewById(R.id.button2);
-        //findMyCar.setTypeface(type);
         statistics=(Button) findViewById(R.id.button3);
-        //statistics.setTypeface(type);
+        aboutAs=(Button)findViewById(R.id.button4);
+
     }
 
     public void addListenersToButtons() {
@@ -55,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+        aboutAs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }

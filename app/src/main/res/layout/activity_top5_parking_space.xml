@@ -6,6 +6,20 @@
     android:background="@drawable/backactivity"
     tools:context="com.example.hadar.parkit.StatisticsActivity">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mytitle"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Top 5 Parking Space"
+        android:textColor="@android:color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:name="com.google.android.gms.maps.SupportMapFragment"
