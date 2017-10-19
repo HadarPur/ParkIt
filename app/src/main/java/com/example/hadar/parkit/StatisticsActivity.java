@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class StatisticsActivity extends AppCompatActivity {
-    private Spinner spinner1, spinner2;
+    private Spinner spinner1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +25,5 @@ public class StatisticsActivity extends AppCompatActivity {
                 R.array.time_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter);
-
-        spinner2 = (Spinner)  findViewById(R.id.spinner2);
-        spinner2.setAdapter(adapter);
     }
 }
