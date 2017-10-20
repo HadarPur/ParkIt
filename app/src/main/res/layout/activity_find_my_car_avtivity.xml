@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backactivity"
-    tools:context="com.example.hadar.parkit.FindMyCarActivity">
+    tools:context="com.example.hadar.parkit.UI.FindMyCarActivity">
 
     <TextView
         android:id="@+id/textView3"

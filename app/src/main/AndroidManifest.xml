@@ -22,7 +22,7 @@
             android:value="AIzaSyDYoDgh-0BuY_l61cnU7tM2eZsmyvlMZWU" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".UI.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FindMyCarActivity"
+            android:name=".UI.FindMyCarActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatisticsActivity"
+            android:name=".UI.StatisticsActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FindParkingSpaceActivity"
+            android:name=".UI.FindParkingSpaceActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Top5ParkingSpaceActivity"
+            android:name=".UI.Top5ParkingSpaceActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -71,7 +71,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutUsActivity"
+            android:name=".UI.AboutUsActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>

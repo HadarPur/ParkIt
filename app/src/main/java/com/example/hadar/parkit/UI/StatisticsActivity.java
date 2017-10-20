@@ -1,9 +1,11 @@
-package com.example.hadar.parkit;
+package com.example.hadar.parkit.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.example.hadar.parkit.R;
 
 public class StatisticsActivity extends AppCompatActivity {
     private Spinner spinner1;

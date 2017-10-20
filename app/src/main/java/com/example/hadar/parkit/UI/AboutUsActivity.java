@@ -1,10 +1,12 @@
-package com.example.hadar.parkit;
+package com.example.hadar.parkit.UI;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
+
+import com.example.hadar.parkit.R;
 
 public class AboutUsActivity extends AppCompatActivity {
     private TextView tv;
