@@ -21,12 +21,65 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3"
+        android:layout_toStartOf="@+id/gridLayout"
+        android:layout_above="@+id/map" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:id="@+id/gridLayout"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentEnd="true">
+        <Button
+            android:id="@+id/search"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@drawable/mybutton"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="serif"
+            android:text="Search"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/save"/>
+        <Button
+            android:id="@+id/save"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@drawable/mybutton"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="serif"
+            android:text="Save"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp" />
+        </GridLayout>
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/gridLayout" />
 
 </RelativeLayout>

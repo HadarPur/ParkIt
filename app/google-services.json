@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "823801766432",
+    "firebase_url": "https://parkit-8b60d.firebaseio.com",
+    "project_id": "parkit-8b60d",
+    "storage_bucket": "parkit-8b60d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823801766432:android:072e5b6e1cca4ee2",
+        "android_client_info": {
+          "package_name": "com.example.hadar.parkit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823801766432-mdad562h94db82r53uueq0c32jetlv9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrtIKHCGyfX0V7wNFxxjzes0B39AbWliE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
