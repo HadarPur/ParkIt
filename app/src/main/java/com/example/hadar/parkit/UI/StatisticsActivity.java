@@ -1,20 +1,18 @@
 package com.example.hadar.parkit.UI;
 
 import android.content.Intent;
-import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import com.example.hadar.parkit.Logic.Map;
-import com.example.hadar.parkit.Logic.UseLocation;
+import com.example.hadar.parkit.Logic.UserLocation;
 import com.example.hadar.parkit.R;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class StatisticsActivity extends AppCompatActivity {
     private Spinner spinner1;
-    private UseLocation currLocation;
+    private UserLocation currLocation;
     private SupportMapFragment mapFragment;
     private Map map;
 
@@ -40,7 +38,6 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public void showOnMap(){
-
         Bundle ex;
         double longitude, latitude;
         Intent intent = getIntent();
@@ -51,7 +48,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 latitude = ex.getDouble("startLocationLat");
                 longitude = ex.getDouble("startLocationLong");
                 mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map = new Map(mapFragment, latitude, longitude);
+                map = new Map(mapFragment, latitude, longitude, this.getApplicationContext());
             }
         }
     }
