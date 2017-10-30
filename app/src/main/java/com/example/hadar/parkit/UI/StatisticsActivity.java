@@ -1,13 +1,17 @@
 package com.example.hadar.parkit.UI;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import com.example.hadar.parkit.Logic.Map;
 import com.example.hadar.parkit.Logic.UserLocation;
 import com.example.hadar.parkit.R;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class StatisticsActivity extends AppCompatActivity {
@@ -15,7 +19,8 @@ public class StatisticsActivity extends AppCompatActivity {
     private UserLocation currLocation;
     private SupportMapFragment mapFragment;
     private Map map;
-
+    private RelativeLayout loadingBack;
+    private SpinKitView loader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,7 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         findViews();
+        //loadingPage(); for the callback
     }
 
     public void findViews () {
@@ -35,7 +41,17 @@ public class StatisticsActivity extends AppCompatActivity {
                 R.array.time_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter);
+
+        loadingBack=(RelativeLayout)findViewById(R.id.load);
+        loadingBack.setBackgroundColor(Color.argb(200, 165,205,253));
+        loader=(SpinKitView)findViewById(R.id.spin_kit);
     }
+
+    public void loadingPage() {
+        loadingBack.setVisibility(View.VISIBLE);
+        loader.setVisibility(View.VISIBLE);
+    }
+
 
     public void showOnMap(){
         Bundle ex;

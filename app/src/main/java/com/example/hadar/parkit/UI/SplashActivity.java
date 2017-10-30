@@ -26,13 +26,12 @@ public class SplashActivity extends AppCompatActivity {
         loading = (ImageView)findViewById(R.id.imageView);
         rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
                 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(SPLASH_OUT);
+        rotate.setDuration(SPLASH_OUT/2);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loading.startAnimation(rotate);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -41,5 +40,6 @@ public class SplashActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         }, SPLASH_OUT);
+        loading.startAnimation(rotate);
     }
 }

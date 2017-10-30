@@ -23,27 +23,67 @@
         android:layout_marginBottom="10dp"/>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_height="45dp"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/linearLayout">
+        android:gravity="center_vertical"
+        android:layout_below="@+id/textView">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_above="@+id/map"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/mybutton"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="serif"
+            android:text="Location:"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/mybutton"
+            android:backgroundTint="@android:color/background_light"
+            android:fontFamily="serif" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout2"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:layout_above="@+id/map"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/mybutton"
             android:backgroundTint="@color/colorAccent"
             android:fontFamily="serif"
             android:text="Arrival Time:"
             android:textColor="@android:color/white"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_above="@+id/map"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentStart="true" />
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinner1"
@@ -57,16 +97,18 @@
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/spinner1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/mybutton"
             android:backgroundTint="@color/colorAccent"
             android:fontFamily="serif"
             android:text="Search"
             android:textColor="@android:color/white"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:layout_alignTop="@+id/spinner1"
-            android:layout_alignParentEnd="true" />
+            android:textStyle="bold" />
+
     </LinearLayout>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -77,5 +119,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout" />
+
+    <!--take from external library https://github.com/ybq/Android-SpinKit -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:id="@+id/load">
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent"
+            android:visibility="invisible"/>
+    </RelativeLayout>
 
 </RelativeLayout>
