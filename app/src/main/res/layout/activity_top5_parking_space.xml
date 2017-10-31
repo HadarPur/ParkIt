@@ -29,5 +29,36 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
+    <!--take from external library https://github.com/ybq/Android-SpinKit -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:id="@+id/load">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spin_kit"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:fontFamily="serif"
+            android:text="Loading..."
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
 

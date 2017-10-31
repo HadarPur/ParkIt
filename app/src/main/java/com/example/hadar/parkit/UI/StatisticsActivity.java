@@ -31,7 +31,7 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         findViews();
-        //loadingPage(); for the callback
+        //loadingPage(); //for the callback
     }
 
     public void findViews () {
@@ -49,7 +49,10 @@ public class StatisticsActivity extends AppCompatActivity {
 
     public void loadingPage() {
         loadingBack.setVisibility(View.VISIBLE);
-        loader.setVisibility(View.VISIBLE);
+    }
+
+    public void doneLoadingPage() {
+        loadingBack.setVisibility(View.GONE);
     }
 
 
