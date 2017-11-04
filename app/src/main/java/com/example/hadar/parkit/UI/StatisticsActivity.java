@@ -1,6 +1,11 @@
 package com.example.hadar.parkit.UI;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.example.hadar.parkit.Logic.Map;
@@ -44,6 +50,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private AutoCompleteTextView txt;
     private boolean isFirst=true;
     private ArrayList<String> names;
+    private RelativeLayout loadingBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +76,17 @@ public class StatisticsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        streetsInfo.initAll();
-        ArrayAdapter adapter = new ArrayAdapter(this,R.layout.drop_down,names);
-        txt.setThreshold(2);
-        txt.setAdapter(adapter);
-        FirebaseData data = new FirebaseData();
-        data.ReadData(streetsInfo,names,adapter);
-        showOnMap(0,isFirst);
+        if (!isNetworkAvailable(this))
+            showConnectionInternetFailed();
+        else {
+            streetsInfo.initAll();
+            ArrayAdapter adapter = new ArrayAdapter(this, R.layout.drop_down, names);
+            txt.setThreshold(2);
+            txt.setAdapter(adapter);
+            FirebaseData data = new FirebaseData();
+            data.ReadData(streetsInfo, names, adapter);
+            showOnMap(0, isFirst);
+        }
     }
 
     public int timeType(int position){
@@ -96,6 +107,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     public void findViews () {
+        loadingBack=(RelativeLayout)findViewById(R.id.load);
         txt = (AutoCompleteTextView)findViewById(R.id.autoTxt);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -149,13 +161,43 @@ public class StatisticsActivity extends AppCompatActivity {
         return true;
     }
 
-//    //start loading view fot the callback
-//    public void loadingPage() {
-//        loadingBack.setVisibility(View.VISIBLE);
-//    }
-//
-//    //finish loading view fot the callback
-//    public void doneLoadingPage() {
-//        loadingBack.setVisibility(View.GONE);
-//    }
+    //massage that network isn't open
+    public void showConnectionInternetFailed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Network Connection Failed");
+        alertDialog.setMessage("Network is not enabled." +
+                "\n"+
+                "If you want to see record table you need a connection to the network");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent=new Intent(StatisticsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.show();
+    }
+
+    //check network connection
+    public static boolean isNetworkAvailable(Context ctx) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
+                || (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    //start loading view fot the callback
+    public void loadingPage() {
+        loadingBack.setVisibility(View.VISIBLE);
+    }
+
+    //finish loading view fot the callback
+    public void doneLoadingPage() {
+        loadingBack.setVisibility(View.GONE);
+    }
 }
