@@ -152,6 +152,7 @@ public class Map implements OnMapReadyCallback {
     //show on street parking places
     public void showMarker(Street st, Activity activity){
         int status=0;
+
         st.findStreetLocation(activity,st.getStreet());
         status = getStatus(st);
         LatLng PlayerLatLng = new LatLng(st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude());
@@ -161,16 +162,16 @@ public class Map implements OnMapReadyCallback {
         markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
         switch(status){
             case 0:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_free));
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                 break;
             case 1:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_available));
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 break;
             case 2:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_occupied));
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                 break;
             case 3:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_full));
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
                 break;
         }
         mMap.addMarker(markerOptionsDriverLocation);
