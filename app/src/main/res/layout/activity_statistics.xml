@@ -46,19 +46,21 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editText1"
+        <AutoCompleteTextView
+            android:id="@+id/autoTxt"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:textSize="20dp"
+            android:inputType="text"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:background="@drawable/mybutton"
             android:backgroundTint="@android:color/background_light"
-            android:fontFamily="serif" />
+            android:fontFamily="serif"
+            android:ems="10"/>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -127,28 +129,16 @@
         android:gravity="center"
         android:visibility="invisible"
         android:id="@+id/load">
-
         <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/spin_kit"
-            style="@style/SpinKitView.Large.DoubleBounce"
+            style="@style/SpinKitView.Large.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            app:SpinKit_Color="@color/colorAccent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spin_kit"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:fontFamily="serif"
-            android:text="Loading..."
-            android:textColor="@color/colorAccent"
-            android:textSize="18dp" />
-
+            app:SpinKit_Color="@color/colorAccent"
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 </RelativeLayout>

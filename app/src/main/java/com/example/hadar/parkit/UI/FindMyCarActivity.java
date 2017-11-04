@@ -10,10 +10,11 @@ import com.example.hadar.parkit.Logic.Map;
 import com.example.hadar.parkit.Logic.UserLocation;
 import com.example.hadar.parkit.R;
 import com.google.android.gms.maps.SupportMapFragment;
-
 import java.io.IOException;
 
 public class FindMyCarActivity extends AppCompatActivity {
+    private static final int PROXIMITY_RADIUS = 0;
+    private static final int ACTIVITY = 2;
     private SupportMapFragment mapFragment;
     private Map map;
     private UserLocation location;
@@ -35,7 +36,6 @@ public class FindMyCarActivity extends AppCompatActivity {
         search=(Button) findViewById(R.id.search);
         reset=(Button) findViewById(R.id.reset);
         parkingLocation=(TextView)findViewById(R.id.parkinglocation);
-
     }
 
     public void addListeners() {
@@ -67,6 +67,7 @@ public class FindMyCarActivity extends AppCompatActivity {
         });
     }
 
+
     public void showOnMap() {
         Bundle ex;
         double longitude, latitude;
@@ -78,7 +79,7 @@ public class FindMyCarActivity extends AppCompatActivity {
                     latitude = ex.getDouble("startLocationLat");
                     longitude = ex.getDouble("startLocationLong");
                     location = new UserLocation(this, latitude, longitude);
-                    map = new Map(mapFragment, latitude, longitude, this.getApplicationContext());
+                    map = new Map(mapFragment, latitude, longitude, this.getApplicationContext(),PROXIMITY_RADIUS,ACTIVITY);
                     parkingLocation.setText("Current Location:\n\n"+ map.getLocationName(latitude, longitude));
                 }
             }

@@ -7,7 +7,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -31,6 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UI.MainActivity"
             android:screenOrientation="portrait">
@@ -40,6 +41,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UI.FindMyCarActivity"
             android:noHistory="true"
@@ -60,6 +62,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UI.FindParkingSpaceActivity"
             android:noHistory="true"
@@ -80,6 +83,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UI.AboutUsActivity"
             android:noHistory="true"

@@ -50,7 +50,7 @@ public class UserLocation {
         this.parkingLongitude=service.readLocationByKey(LOCATION_LGT_CODE);
         this.parkingLatitude=service.readLocationByKey(LOCATION_LAT_CODE);
         if (parkingLongitude!=0&&parkingLatitude!=0) {
-            street = map.setMarkersOnMap(parkingLongitude,parkingLatitude);
+            street = map.setCarMarkersOnMap(parkingLongitude,parkingLatitude);
         }
         return street;
     }

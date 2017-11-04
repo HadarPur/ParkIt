@@ -10,26 +10,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.example.hadar.parkit.Logic.GPSTracker;
 import com.example.hadar.parkit.R;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG ="Main";
-    private Button statistics, findMyCar, findParkingSpace, aboutAs;
+    Button statistics, findMyCar, findParkingSpace, aboutAs;
     private boolean firstAsk=true;
     private GPSTracker gpsTracker ;
     private Location startLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gpsTracker = new GPSTracker(this, firstAsk);
-        if (gpsTracker!=null)
+        if (gpsTracker!=null) {
             startLocation = gpsTracker.getPosition();
-        Log.d(TAG,"location: ("+startLocation.getLatitude()+" , "+startLocation.getLongitude()+" )");
-
+            Log.d(TAG, "location: (" + startLocation.getLatitude() + " , " + startLocation.getLongitude() + " )");
+        }
     }
 
     @Override
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         findMyCar=(Button) findViewById(R.id.button2);
         statistics=(Button) findViewById(R.id.button3);
         aboutAs=(Button)findViewById(R.id.button4);
-
     }
 
     public void addListenersToButtons() {
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         statistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /** transformation from object to Json string **/
                 Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
                 intent.putExtra("startLocationLat", startLocation.getLatitude());
                 intent.putExtra("startLocationLong", startLocation.getLongitude());
@@ -118,4 +119,5 @@ public class MainActivity extends AppCompatActivity {
         });
         alertDialog.show();
     }
+
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-
 import com.example.hadar.parkit.R;
 
 public class SplashActivity extends AppCompatActivity {

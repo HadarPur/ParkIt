@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.example.hadar.parkit"
         minSdkVersion 21
@@ -24,12 +24,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.ybq:Android-SpinKit:1.1.0'
     compile 'com.google.android.gms:play-services-maps:9.0.0'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.firebase:firebase-database:9.0.0'
+    compile 'com.github.ybq:Android-SpinKit:1.1.0'
     testCompile 'junit:junit:4.12'
 }
-
 
 apply plugin: 'com.google.gms.google-services'

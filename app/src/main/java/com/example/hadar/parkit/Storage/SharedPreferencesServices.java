@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 public class SharedPreferencesServices{
     private final Activity activity;
 
+    //c'tor
     public SharedPreferencesServices (Activity activity) {
         this.activity = activity;
     }

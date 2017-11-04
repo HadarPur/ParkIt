@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 public class GPSTracker extends Service implements LocationListener {
+    private static final String TAG =GPSTracker.class.getSimpleName();
     private final int PERMISSION_LOCATION_CODE=1234;
     private final Activity activity;
     boolean isGPSEnabled =false;
@@ -46,6 +47,7 @@ public class GPSTracker extends Service implements LocationListener {
                         == PackageManager.PERMISSION_GRANTED ||
                         ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
                                 == PackageManager.PERMISSION_GRANTED) {
+
                     requestLocation();
                 }
                 else {
@@ -54,11 +56,10 @@ public class GPSTracker extends Service implements LocationListener {
                         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_CODE);
                         incrementCounter(PERMISSION_LOCATION_CODE);
                     }
-                    else
-                        activity.finish();
                 }
             }
-            else {
+            else
+            {
                 // for older versions
                 requestLocation();
             }
@@ -68,7 +69,6 @@ public class GPSTracker extends Service implements LocationListener {
         }
     }
 
-    //set first permission counter = 0
     private void setFirstCounter() {
         SharedPreferences sharedPreferences=activity.getSharedPreferences("permissionCounters", Context.MODE_PRIVATE);
         String sharedPreferencesKey=String.valueOf(PERMISSION_LOCATION_CODE);
@@ -76,19 +76,19 @@ public class GPSTracker extends Service implements LocationListener {
         sharedPreferences.edit().putInt(sharedPreferencesKey, permissionCounter).apply();
     }
 
-    //get permission counter
     private int getCounter(int permissionCode) {
         SharedPreferences sharedPreferences=activity.getSharedPreferences("permissionCounters", Context.MODE_PRIVATE);
         String sharedPreferencesKey=String.valueOf(permissionCode);
         int permissionCounter=sharedPreferences.getInt(sharedPreferencesKey, 0);
+        Log.d(TAG, "counter value (get counter): " +permissionCounter);
         return permissionCounter;
     }
 
-    //permission counter++
     public void incrementCounter(int permissionCode) {
         SharedPreferences sharedPreferences=activity.getSharedPreferences("permissionCounters", Context.MODE_PRIVATE);
         String sharedPreferencesKey=String.valueOf(permissionCode);
         int permissionCounter=sharedPreferences.getInt(sharedPreferencesKey, 0);
+        Log.d(TAG, "counter value (increment): " +permissionCounter);
         sharedPreferences.edit().putInt(sharedPreferencesKey, permissionCounter+1).apply();
     }
 
@@ -104,7 +104,7 @@ public class GPSTracker extends Service implements LocationListener {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
         }
-        // if location is not found from GPS than it will found from network //
+        // if lcoation is not found from GPS than it will found from network //
         if (location == null) {
             if (isNetworkEnabled) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, this);

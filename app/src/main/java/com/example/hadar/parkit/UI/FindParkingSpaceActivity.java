@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import com.example.hadar.parkit.R;
 
 public class FindParkingSpaceActivity extends AppCompatActivity {
+    private static final int ACTIVITY = 1;
     private Button search;
     private Spinner spinner;
     @Override
