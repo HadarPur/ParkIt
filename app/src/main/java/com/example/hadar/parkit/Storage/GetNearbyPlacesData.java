@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.example.hadar.parkit.Logic.DataParser;
 import com.example.hadar.parkit.Logic.DownloadUrl;
-import com.example.hadar.parkit.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -60,9 +59,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
             mMap.addMarker(markerOptions);
-            //move map camera
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
     }
 }

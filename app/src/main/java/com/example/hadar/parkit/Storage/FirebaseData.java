@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.example.hadar.parkit.Logic.Street;
+import com.example.hadar.parkit.Logic.StreetsData;
 import com.example.hadar.parkit.Storage.quaries.CallData;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,19 +19,18 @@ import java.util.Iterator;
 
 public class FirebaseData implements Serializable{
     private static final String TAG = "data";
-    private static final int NUM_OF_HOURS =6;
+    private static final int NUM_OF_HOURS =3;
     private Street readed;
     private ArrayList<Street> cloudData [];
     private DatabaseReference myRef;
     private DatabaseReference[] myRefChildren ;
-    private String [] hours = {"afternoon","early in the morning","evening","morning","night","noon"};
+    private String [] hours = {"morning","night","noon"};
     private String dayOfWeek;
 
     //c'tor
     public FirebaseData(){
-
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        myRefChildren = new DatabaseReference[6];
+        myRefChildren = new DatabaseReference[NUM_OF_HOURS];
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -64,15 +64,18 @@ public class FirebaseData implements Serializable{
     }
 
     //read data from firebase
-    public void ReadData(final CallData queryCallback,ArrayList<String> names,ArrayAdapter adapter){
+    public void ReadData( StreetsData.Callback calllback){
         initData();
         for(int i=0; i< myRefChildren.length; i++){
-            callingEvent(myRefChildren[i], queryCallback,i,names,adapter);
+            callingEvent(myRefChildren[i],i,calllback);
         }
+      /*  if (calllback != null) {
+            calllback.onCallback(cloudData);
+        }*/
     }
 
     //callback event
-    private void callingEvent(DatabaseReference ref, final CallData queryCallback,final int index,final ArrayList<String> names,final ArrayAdapter adapter){
+    private void callingEvent(DatabaseReference ref,final int index,final StreetsData.Callback calllback){
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,7 +85,11 @@ public class FirebaseData implements Serializable{
                     Log.d(TAG," name: "+readed.getStreet());
                     cloudData[index].add(readed);
                 }
-                queryCallback.performQuery(cloudData[index],index,names, adapter);
+
+                if (calllback != null) {
+                    calllback.onCallback(cloudData);
+                }
+               // queryCallback.performQuery(cloudData[index],index);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -7,5 +7,5 @@ import java.util.ArrayList;
 /** this interface implemented inorder to synchronize the retrieved data from the Firebase **/
 
 public interface CallData {
-    void performQuery(ArrayList<Street> list, int index,ArrayList<String> names,ArrayAdapter adapter);
+    void performQuery(ArrayList<Street> list, int index);
 }

@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 /** contains info about single street **/
-
 public class Street implements Serializable {
-
     private static final String TAG ="STREET";
     private String cars;
     private String rate;
@@ -25,13 +22,10 @@ public class Street implements Serializable {
     private UserLocation streetLocation;
     private double walking_distance;
 
-
     public Street(){
-
     }
 
     public Street(String cars, String rate, String sensors, String street, Activity activity){
-
         this.cars = cars;
         this.rate = rate;
         this.sensors = sensors;
@@ -39,21 +33,17 @@ public class Street implements Serializable {
     }
 
     public void convertAll(){
-
         this.occupacy = Double.parseDouble(rate);
         this.numOfCars = Integer.parseInt(cars);
         this.numOfSensors = Integer.parseInt(sensors);
     }
 
     /** calculates the location of a street by name **/
-
     public void findStreetLocation(Activity activity,String name){
-
         streetLocation = getLocation(name,activity);
     }
 
     public UserLocation getLocation(String name, Activity activity){
-
         Geocoder coder = new Geocoder(activity.getApplicationContext());
         List<Address> address;
         List<Address> streets;
@@ -64,7 +54,6 @@ public class Street implements Serializable {
             if (address == null) {
                 return null;
             }
-
             if (address.size() == 0) {
                 return null;
             }
@@ -74,13 +63,14 @@ public class Street implements Serializable {
             String neighName= add.getSubLocality();
             streets = coder.getFromLocation(location.getLatitude(),location.getLongitude(),10);
             Log.d(TAG,"number of dtreets: : "+streets.size());
-            for(int i=0; i<streets.size(); i++){
 
+            for(int i=0; i<streets.size(); i++){
                 String stname = streets.get(i).getThoroughfare();
                 Log.d(TAG,"street: "+stname);
             }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -89,18 +79,18 @@ public class Street implements Serializable {
 
 
     public void calcWalkingDistance(String destination,Activity activity){
-
         UserLocation destinationloc;
         destinationloc=getLocation(destination,activity);
-        walking_distance = Math.sqrt(Math.pow((streetLocation.getLatitude()-destinationloc.getLatitude()),2)-Math.pow((streetLocation.getLongitude()-destinationloc.getLongitude()),2));
+        walking_distance = Math.sqrt((streetLocation.getLatitude()-destinationloc.getLatitude())*(streetLocation.getLatitude()-destinationloc.getLatitude()))-(streetLocation.getLongitude()-destinationloc.getLongitude())*(streetLocation.getLongitude()-destinationloc.getLongitude());
 
     }
 
+    public double getWalking_distance() {
+        return walking_distance;
+    }
 
     /** calculates the utility value of each street **/
-
     public void utilityFunction(String destination,int Max_Walking){
-
         double walking_distance_norm,cars_rate,accupacy_Rate;
         convertAll();
         accupacy_Rate=norm(occupacy,100);
@@ -111,16 +101,15 @@ public class Street implements Serializable {
     }
 
     /** calculate norm **/
-
     public double norm(double real_Value, double Max_value){
-
         double norm;
         norm= real_Value/ Max_value;
         return norm;
     }
 
     public String getStreet() {
-        return street;
+        //String city = "Bat Yam";
+        return street;//+" st "+ city;
     }
 
     public String getCars() {
@@ -156,10 +145,7 @@ public class Street implements Serializable {
     }
 
     public double getOccupacy() {
-        return occupacy;
+        return this.occupacy;
     }
 
-    /*public double getRate() {
-        return rate;
-    }*/
 }

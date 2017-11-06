@@ -45,7 +45,7 @@ public class UserLocation {
         service.saveLocationByKey(LOCATION_LAT_CODE, lat);
     }
 
-    public String readParkingLocation(TextView text, Map map) throws IOException {
+    public String readParkingLocation(Map map) throws IOException {
         String street="";
         this.parkingLongitude=service.readLocationByKey(LOCATION_LGT_CODE);
         this.parkingLatitude=service.readLocationByKey(LOCATION_LAT_CODE);

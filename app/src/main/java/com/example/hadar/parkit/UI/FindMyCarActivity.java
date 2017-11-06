@@ -51,7 +51,7 @@ public class FindMyCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    String street = location.readParkingLocation(parkingLocation, map);
+                    String street = location.readParkingLocation(map);
                     parkingLocation.setText("Parking Location:\n\n"+street);
                 }
                 catch (IOException ex1) {

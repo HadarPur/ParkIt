@@ -32,7 +32,7 @@ public class Map implements OnMapReadyCallback {
     private double latitude, longitude;
     private Geocoder gc;
     private MarkerOptions markerOptionsMyLocation, markerOptionsDriverLocation;
-    private String[] statusTypes = {"empty","available","occupied","full"};
+    //private String[] statusTypes = {"empty","available","occupied","full"};
     private int radius,activity;
 
     public Map(SupportMapFragment mapFragment, double latitude, double longitude, Context context,
@@ -75,11 +75,41 @@ public class Map implements OnMapReadyCallback {
     }
 
     //show markers statistics on the map
-    public void showStatistics(ArrayList<Street> streets,Activity activity){
-        for(int i=0;i<streets.size();i++){
-            Log.d("TAG"," street name: "+streets.get(i).getStreet());
-            showMarker(streets.get(i),activity);
+    public void showStatistics(ArrayList<Street> streets,Activity activity,double latitude,double longitude,String name) {
+
+        this.latitude=latitude;
+        this.longitude=longitude;
+        try {
+            setMyLocationOnTheMap();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Log.d(TAG,"markers : "+streets.size());
+        Object[] DataTransfer = new Object[4];
+        DataTransfer[0] = mMap;
+        DataTransfer[1] = streets;
+        DataTransfer[2] = activity;
+        DataTransfer[3] = name;
+
+        CalcDistance calcOnRadius = new CalcDistance();
+        calcOnRadius.execute(DataTransfer);
+       /* for(int i=0;i<streets.size();i++) {
+            Log.d(TAG,"street: "+streets.get(i).getStreet());
+            showMarker(streets.get(i), activity);
+        }*/
+    }
+
+    //set default location on the map
+    public void setDefaultLocationOnTheMap() throws IOException{
+        //place users markers
+        mMap.clear();
+
+        //Place current location marker
+        LatLng latLng = new LatLng(latitude, longitude);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
     }
 
     //set user location on the map
@@ -96,7 +126,12 @@ public class Map implements OnMapReadyCallback {
 
         //Place current location marker
         markerOptionsMyLocation.position(latLng);
-        markerOptionsMyLocation.title("Current Position");
+        if(activity == FIND_CAR) {
+            markerOptionsMyLocation.title("Current Position");
+        }
+        else{
+            markerOptionsMyLocation.title("Your Destination:");
+        }
         markerOptionsMyLocation.snippet("Location: " + street);
         mMap.addMarker(markerOptionsMyLocation);
 
@@ -132,9 +167,10 @@ public class Map implements OnMapReadyCallback {
     }
 
     //get occupation status
-    public int getStatus(Street st){
+   /* public int getStatus(Street st){
         int status = 0;
-        if(st.getOccupacy()>=0 && st.getOccupacy()<25){
+        Log.d(TAG,"status rate: "+st.getOccupacy());
+        if(st.getOccupacy()>=0 && st.getOccupacy()*100<25){
             status = 0;
         }
         if(st.getOccupacy()>=25 && st.getOccupacy()<50){
@@ -147,18 +183,19 @@ public class Map implements OnMapReadyCallback {
             status = 3;
         }
         return status;
-    }
+    }*/
 
     //show on street parking places
-    public void showMarker(Street st, Activity activity){
+    /*public void showMarker(Street st, Activity activity){
         int status=0;
-
-        st.findStreetLocation(activity,st.getStreet());
+        st.convertAll();
+        //st.findStreetLocation(activity,st.getStreet());
         status = getStatus(st);
+        Log.d(TAG,"status : "+status);
         LatLng PlayerLatLng = new LatLng(st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude());
         markerOptionsDriverLocation = new MarkerOptions();
         markerOptionsDriverLocation.position(PlayerLatLng);
-        markerOptionsDriverLocation.title(statusTypes[status]);
+        markerOptionsDriverLocation.title(statusTypes[status]+" : "+st.getRate()+" %");
         markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
         switch(status){
             case 0:
@@ -175,7 +212,8 @@ public class Map implements OnMapReadyCallback {
                 break;
         }
         mMap.addMarker(markerOptionsDriverLocation);
-    }
+        Log.d(TAG,"map----done");
+    }*/
 
     //geocode function return street name
     public String getLocationName(double latitude, double longitude) throws IOException {
