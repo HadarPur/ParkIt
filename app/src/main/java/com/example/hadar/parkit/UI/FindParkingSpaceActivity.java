@@ -3,33 +3,30 @@ package com.example.hadar.parkit.UI;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
-
 import com.example.hadar.parkit.Logic.Street;
 import com.example.hadar.parkit.Logic.StreetsData;
 import com.example.hadar.parkit.R;
-
 import java.util.ArrayList;
 
 public class FindParkingSpaceActivity extends AppCompatActivity {
     private static final int ACTIVITY = 1;
+    private double longitude, latitude;
+    private int radius;
+    private boolean isFirst=true;
     private Button search;
     private Spinner spinner;
     private AutoCompleteTextView txt;
     private String streetName;
-    private int radius;
-    private boolean isFirst=true;
     private ArrayList<String> names;
     private StreetsData streetsInfo;
     private Street st;
     private ArrayList<Street>[] stData;
     private ArrayAdapter adapter;
-    private double longitude, latitude;
 
 
 
@@ -91,7 +88,7 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
                 intent.putExtra("startLocationLat", latitude);
                 intent.putExtra("startLocationLong", longitude);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }

@@ -1,19 +1,12 @@
 package com.example.hadar.parkit.Logic;
 
 import android.app.Activity;
-import android.widget.TextView;
-
 import com.example.hadar.parkit.Storage.SharedPreferencesServices;
-
 import java.io.IOException;
 
 public class UserLocation {
-    private final int LOCATION_LAT_CODE=1212;
-    private final int LOCATION_LGT_CODE=1213;
-    private double longitude;
-    private double latitude;
-    private double parkingLongitude;
-    private double parkingLatitude;
+    private final int LOCATION_LAT_CODE=1212, LOCATION_LGT_CODE=1213;
+    private double longitude, latitude, parkingLongitude, parkingLatitude;
     private Activity activity;
     private SharedPreferencesServices service;
 

@@ -1,17 +1,13 @@
 package com.example.hadar.parkit.Storage;
 
 import android.util.Log;
-import android.widget.ArrayAdapter;
-
 import com.example.hadar.parkit.Logic.Street;
 import com.example.hadar.parkit.Logic.StreetsData;
-import com.example.hadar.parkit.Storage.quaries.CallData;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,9 +65,6 @@ public class FirebaseData implements Serializable{
         for(int i=0; i< myRefChildren.length; i++){
             callingEvent(myRefChildren[i],i,calllback);
         }
-      /*  if (calllback != null) {
-            calllback.onCallback(cloudData);
-        }*/
     }
 
     //callback event
@@ -89,7 +82,6 @@ public class FirebaseData implements Serializable{
                 if (calllback != null) {
                     calllback.onCallback(cloudData);
                 }
-               // queryCallback.performQuery(cloudData[index],index);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

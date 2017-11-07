@@ -2,10 +2,10 @@
     <string name="app_name">ParkIt</string>
 
     <string-array name="walk_array">
-        <item>0.5 km</item>
-        <item>1.0 km</item>
-        <item>1.5 km</item>
-        <item>2.0 km</item>
+        <item>500 m</item>
+        <item>1000 m</item>
+        <item>1500 m</item>
+        <item>2000 m</item>
     </string-array>
 
     <string-array name="time_array">

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.hadar.parkit.UI.StatisticsActivity;
+import com.example.hadar.parkit.UI.Top5ParkingSpaceActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,7 +24,7 @@ public class CalcDistance  implements CallableArr {
     private static final int NUM_OF_THREADS =14;
     private GoogleMap mMap;
     private ArrayList<Street> streets;
-    private StatisticsActivity activity;
+    private StatisticsActivity activitySt;
     private String stName;
     private ArrayList<Street> streetsOnRadar;
     private MarkerOptions markerOptionsDriverLocation;
@@ -32,9 +33,9 @@ public class CalcDistance  implements CallableArr {
     private int count;
 
     public  CalcDistance(GoogleMap mMap,ArrayList<Street> streets,StatisticsActivity activity,String stName) {
-       this.mMap = mMap;
+        this.mMap = mMap;
        this.streets = streets;
-       this.activity = activity;
+       this.activitySt = activity;
        this.stName = stName;
        Log.d(TAG,"dest: "+stName);
        streetsOnRadar = new ArrayList<>();
@@ -42,7 +43,6 @@ public class CalcDistance  implements CallableArr {
        tasks = new DistanceClass[NUM_OF_THREADS];
        findNearbyStreets(stName,activity);
     }
-
 
     public int getStatus(Street st){
         int status = 0;
@@ -73,26 +73,22 @@ public class CalcDistance  implements CallableArr {
         markerOptionsDriverLocation.position(PlayerLatLng);
         markerOptionsDriverLocation.title(statusTypes[status]+" : "+st.getRate()+" %");
         markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
-        if(st.getStreet().equals(stName)==true){
-            markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+        switch (status) {
+            case 0:
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                break;
+            case 1:
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                break;
+            case 2:
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                break;
+            case 3:
+                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                break;
         }
 
-        else {
-            switch (status) {
-                case 0:
-                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                    break;
-                case 1:
-                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    break;
-                case 2:
-                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                    break;
-                case 3:
-                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-                    break;
-            }
-        }
         mMap.addMarker(markerOptionsDriverLocation);
         Log.d(TAG,"map----done");
     }
@@ -112,23 +108,21 @@ public class CalcDistance  implements CallableArr {
             ex.shutdown();
             Log.d(TAG,"all done");
         }
-
     }
 
     @Override
     public synchronized void filterDistance(ArrayList<Street> thArr) {
-        ArrayList<Street> threadArr;
-        threadArr = new ArrayList<>();
+       // ArrayList<Street> threadArr = new ArrayList<>();
         streetsOnRadar.addAll(thArr);
         count++;
         if(count == NUM_OF_THREADS){
-            activity.runOnUiThread(new Runnable() {
+            activitySt.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     for(int i=0;i<streetsOnRadar.size();i++) {
-                        showMarker(streetsOnRadar.get(i), activity);
+                        showMarker(streetsOnRadar.get(i), activitySt);
                     }
-                    activity.doneLoadingPage();
+                    activitySt.doneLoadingPage();
                 }
             });
         }

@@ -3,6 +3,7 @@ package com.example.hadar.parkit.Logic;
 import android.app.Activity;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.util.Log;
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +14,8 @@ public class Street implements Serializable {
     private static final String TAG ="STREET";
     private String cars, rate, sensors, street;
     private int numOfCars, numOfSensors;
-    private double occupacy, utilityValue, walking_distance;
+    private double occupacy, utilityValue;
+    private float[] walking_distance;
     private UserLocation streetLocation;
 
     public Street(){
@@ -72,25 +74,29 @@ public class Street implements Serializable {
 
 
     public void calcWalkingDistance(String destination,Activity activity){
-        UserLocation destinationloc;
-        destinationloc=getLocation(destination,activity);
-        this.walking_distance = Math.sqrt((Math.pow(streetLocation.getLatitude()-destinationloc.getLatitude(),2))+
-                (Math.pow(streetLocation.getLongitude()-destinationloc.getLongitude(),2)));
+        walking_distance=new float[1];
+        UserLocation destinationloc=getLocation(destination,activity);
+        Location.distanceBetween(streetLocation.getLatitude(),streetLocation.getLongitude(),
+                destinationloc.getLatitude(), destinationloc.getLongitude(),
+                this.walking_distance);
     }
 
     public double getWalking_distance() {
-        return this.walking_distance;
+        return this.walking_distance[0];
     }
 
     /** calculates the utility value of each street **/
-    public void utilityFunction(String destination,int Max_Walking){
+    public void utilityFunction(double Max_Walking){
         double walking_distance_norm,cars_rate,accupacy_Rate;
         convertAll();
         accupacy_Rate=norm(occupacy,100);
-        walking_distance_norm=norm(walking_distance,Max_Walking);
+        walking_distance_norm=norm(walking_distance[0] ,Max_Walking);
         cars_rate=norm(numOfCars, numOfSensors);
         utilityValue=10*accupacy_Rate+5*cars_rate+2*walking_distance_norm;
+    }
 
+    public double getUtilityValue() {
+        return utilityValue;
     }
 
     /** calculate norm **/
@@ -101,7 +107,6 @@ public class Street implements Serializable {
     }
 
     public String getStreet() {
-        //String city = "Bat Yam";
         return street;
     }
 

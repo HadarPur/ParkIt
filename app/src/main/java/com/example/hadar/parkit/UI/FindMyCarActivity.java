@@ -13,8 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import java.io.IOException;
 
 public class FindMyCarActivity extends AppCompatActivity {
-    private static final int PROXIMITY_RADIUS = 0;
-    private static final int ACTIVITY = 2;
+    private static final int PROXIMITY_RADIUS = 0, ACTIVITY = 2;
     private SupportMapFragment mapFragment;
     private Map map;
     private UserLocation location;

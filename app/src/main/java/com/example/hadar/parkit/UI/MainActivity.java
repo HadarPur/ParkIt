@@ -27,8 +27,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG ="Main";
-    Button statistics, findMyCar, findParkingSpace, aboutAs;
     private boolean firstAsk=true, isLoading;
+    private Button statistics, findMyCar, findParkingSpace, aboutAs;
     private GPSTracker gpsTracker ;
     private Location startLocation;
     private StreetsData streetsInfo;

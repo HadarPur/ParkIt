@@ -22,8 +22,8 @@ public class GPSTracker extends Service implements LocationListener {
     private static final String TAG =GPSTracker.class.getSimpleName();
     private final int PERMISSION_LOCATION_CODE=1234;
     private final Activity activity;
-    boolean isGPSEnabled =false;
-    boolean isNetworkEnabled =false;
+    private boolean isGPSEnabled =false;
+    private boolean isNetworkEnabled =false;
     private Location location;
     protected LocationManager locationManager;
 

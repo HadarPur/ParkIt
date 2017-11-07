@@ -136,15 +136,16 @@ public class StatisticsActivity extends AppCompatActivity {
     public void showOnMap(int position,boolean isFirst){
         int type;
         String city = "Bat Yam";
+        type = timeType(position);
         if(isFirst == false) {
-            for(int i=0;i<streetsInfo.getStreets(position).size();i++){
-                Street street = streetsInfo.getStreets(position).get(i);
+            for(int i=0;i<streetsInfo.getStreets(type).size();i++){
+                Street street = streetsInfo.getStreets(type).get(i);
                 if(street.getStreet().equals(streetName)==true){
                     st = street;
                 }
             }
             streetName +=city;
-           // st = new Street("10", "60", "20", streetName, this);
+            // st = new Street("10", "60", "20", streetName, this);
             st.findStreetLocation(this, streetName);
             type = timeType(position);
             Log.d(TAG, "( " + st.getStreetLocation().getLatitude() + " , " + st.getStreetLocation().getLongitude() + " ) ");

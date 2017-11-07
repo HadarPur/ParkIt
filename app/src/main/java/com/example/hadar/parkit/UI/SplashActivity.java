@@ -12,6 +12,7 @@ import com.example.hadar.parkit.R;
 public class SplashActivity extends AppCompatActivity {
     public static int SPLASH_OUT=1000;
     private ImageView loading;
+
     public RotateAnimation rotate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

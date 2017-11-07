@@ -1,12 +1,10 @@
 package com.example.hadar.parkit.Logic;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
-
 import com.example.hadar.parkit.R;
 import com.example.hadar.parkit.Storage.GetNearbyPlacesData;
 import com.example.hadar.parkit.UI.StatisticsActivity;
@@ -17,24 +15,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Map implements OnMapReadyCallback {
     private static final String TAG ="map";
-    private static final int FIND_PARKING_SPACE =1;
-    private static final int FIND_CAR =2;
-    private static final int STATISTICS =3;
+    private static final int FIND_PARKING_SPACE =1, FIND_CAR =2, STATISTICS =3;
     private boolean start;
+    private double latitude, longitude, destLatitude, destLongitude;
+    private int radius,activity;
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
-    private double latitude, longitude, destLatitude, desrLongitude;
     private Geocoder gc;
     private MarkerOptions markerOptionsMyLocation, markerOptionsDriverLocation;
-    //private String[] statusTypes = {"empty","available","occupied","full"};
-    private int radius,activity;
 
 
     public Map(SupportMapFragment mapFragment, double latitude, double longitude, Context context,
@@ -82,7 +76,7 @@ public class Map implements OnMapReadyCallback {
     //show markers statistics on the map
     public void showStatistics(ArrayList<Street> streets, StatisticsActivity act, double latitude, double longitude, String name) {
         this.destLatitude=latitude;
-        this.desrLongitude=longitude;
+        this.destLongitude=longitude;
         try {
             setDestLocationOnTheMap();
         }
@@ -120,13 +114,13 @@ public class Map implements OnMapReadyCallback {
 
     //set user location on the map
     public void setDestLocationOnTheMap() throws IOException{
-
+        setMyLocationOnTheMap();
         //Place current location marker
-        LatLng latLng = new LatLng(destLatitude, desrLongitude);
+        LatLng latLng = new LatLng(destLatitude, destLongitude);
         markerOptionsMyLocation = new MarkerOptions();
 
         //get street name
-        String street= getLocationName(destLatitude, desrLongitude);
+        String street= getLocationName(destLatitude, destLongitude);
 
         //Place current location marker
         markerOptionsMyLocation.position(latLng);
@@ -159,6 +153,32 @@ public class Map implements OnMapReadyCallback {
         markerOptionsDriverLocation.title("Parking Location");
         markerOptionsDriverLocation.snippet("Location: " + street);
         markerOptionsDriverLocation.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+        mMap.addMarker(markerOptionsDriverLocation);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(PlayerLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
+        return street;
+    }
+
+
+    //set marker with car's location on the map
+    public String setMarkersOnMap(double lgt, double lat) throws IOException {
+        //place users markers
+        String street;
+        mMap.clear();
+        //to specific location
+        LatLng PlayerLatLng = new LatLng(lat, lgt);
+        markerOptionsDriverLocation = new MarkerOptions();
+        //get street name
+        street = getLocationName(lat, lgt);
+
+        //set markers on the map
+        markerOptionsDriverLocation.position(PlayerLatLng);
+        markerOptionsDriverLocation.title("On Street Parking");
+        markerOptionsDriverLocation.snippet("Location: " + street);
+        markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
         mMap.addMarker(markerOptionsDriverLocation);
 
         //move map camera
