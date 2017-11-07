@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.hadar.parkit.R;
 import com.example.hadar.parkit.Storage.GetNearbyPlacesData;
+import com.example.hadar.parkit.UI.StatisticsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,11 +30,12 @@ public class Map implements OnMapReadyCallback {
     private boolean start;
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
-    private double latitude, longitude;
+    private double latitude, longitude, destLatitude, desrLongitude;
     private Geocoder gc;
     private MarkerOptions markerOptionsMyLocation, markerOptionsDriverLocation;
     //private String[] statusTypes = {"empty","available","occupied","full"};
     private int radius,activity;
+
 
     public Map(SupportMapFragment mapFragment, double latitude, double longitude, Context context,
                int proximity_radius,int activity_type){
@@ -51,13 +53,13 @@ public class Map implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         try {
             mMap = googleMap;
-            mMap.clear();
             Log.d(TAG,"set my location");
-            switch (activity){
+            switch (activity) {
                 case FIND_CAR:
                     setMyLocationOnTheMap();
                     break;
                 case STATISTICS:
+                    setMyLocationOnTheMap();
                     String url = getUrl(latitude, longitude, "parking");
                     Object[] DataTransfer = new Object[2];
                     DataTransfer[0] = mMap;
@@ -65,9 +67,12 @@ public class Map implements OnMapReadyCallback {
                     Log.d("url: ", url);
                     GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                     getNearbyPlacesData.execute(DataTransfer);
+                    break;
+                case FIND_PARKING_SPACE:
                     setMyLocationOnTheMap();
                     break;
-                }
+            }
+
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -75,41 +80,18 @@ public class Map implements OnMapReadyCallback {
     }
 
     //show markers statistics on the map
-    public void showStatistics(ArrayList<Street> streets,Activity activity,double latitude,double longitude,String name) {
-
-        this.latitude=latitude;
-        this.longitude=longitude;
+    public void showStatistics(ArrayList<Street> streets, StatisticsActivity act, double latitude, double longitude, String name) {
+        this.destLatitude=latitude;
+        this.desrLongitude=longitude;
         try {
-            setMyLocationOnTheMap();
-        } catch (IOException e) {
+            setDestLocationOnTheMap();
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         Log.d(TAG,"markers : "+streets.size());
-        Object[] DataTransfer = new Object[4];
-        DataTransfer[0] = mMap;
-        DataTransfer[1] = streets;
-        DataTransfer[2] = activity;
-        DataTransfer[3] = name;
 
-        CalcDistance calcOnRadius = new CalcDistance();
-        calcOnRadius.execute(DataTransfer);
-       /* for(int i=0;i<streets.size();i++) {
-            Log.d(TAG,"street: "+streets.get(i).getStreet());
-            showMarker(streets.get(i), activity);
-        }*/
-    }
-
-    //set default location on the map
-    public void setDefaultLocationOnTheMap() throws IOException{
-        //place users markers
-        mMap.clear();
-
-        //Place current location marker
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        CalcDistance calcOnRadius = new CalcDistance(mMap,streets,act,name);
     }
 
     //set user location on the map
@@ -126,13 +108,33 @@ public class Map implements OnMapReadyCallback {
 
         //Place current location marker
         markerOptionsMyLocation.position(latLng);
-        if(activity == FIND_CAR) {
-            markerOptionsMyLocation.title("Current Position");
-        }
-        else{
-            markerOptionsMyLocation.title("Your Destination:");
-        }
+        markerOptionsMyLocation.title("Current Position");
+
         markerOptionsMyLocation.snippet("Location: " + street);
+        mMap.addMarker(markerOptionsMyLocation);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+    }
+
+    //set user location on the map
+    public void setDestLocationOnTheMap() throws IOException{
+
+        //Place current location marker
+        LatLng latLng = new LatLng(destLatitude, desrLongitude);
+        markerOptionsMyLocation = new MarkerOptions();
+
+        //get street name
+        String street= getLocationName(destLatitude, desrLongitude);
+
+        //Place current location marker
+        markerOptionsMyLocation.position(latLng);
+        markerOptionsMyLocation.title("Your Destination");
+
+        markerOptionsMyLocation.snippet("Location: " + street);
+        markerOptionsMyLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
         mMap.addMarker(markerOptionsMyLocation);
 
         //move map camera
@@ -166,54 +168,6 @@ public class Map implements OnMapReadyCallback {
         return street;
     }
 
-    //get occupation status
-   /* public int getStatus(Street st){
-        int status = 0;
-        Log.d(TAG,"status rate: "+st.getOccupacy());
-        if(st.getOccupacy()>=0 && st.getOccupacy()*100<25){
-            status = 0;
-        }
-        if(st.getOccupacy()>=25 && st.getOccupacy()<50){
-            status = 1;
-        }
-        if(st.getOccupacy()>=50 && st.getOccupacy()<75){
-            status = 2;
-        }
-        if(st.getOccupacy()>=75 && st.getOccupacy()<=100){
-            status = 3;
-        }
-        return status;
-    }*/
-
-    //show on street parking places
-    /*public void showMarker(Street st, Activity activity){
-        int status=0;
-        st.convertAll();
-        //st.findStreetLocation(activity,st.getStreet());
-        status = getStatus(st);
-        Log.d(TAG,"status : "+status);
-        LatLng PlayerLatLng = new LatLng(st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude());
-        markerOptionsDriverLocation = new MarkerOptions();
-        markerOptionsDriverLocation.position(PlayerLatLng);
-        markerOptionsDriverLocation.title(statusTypes[status]+" : "+st.getRate()+" %");
-        markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
-        switch(status){
-            case 0:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                break;
-            case 1:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                break;
-            case 2:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                break;
-            case 3:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-                break;
-        }
-        mMap.addMarker(markerOptionsDriverLocation);
-        Log.d(TAG,"map----done");
-    }*/
 
     //geocode function return street name
     public String getLocationName(double latitude, double longitude) throws IOException {

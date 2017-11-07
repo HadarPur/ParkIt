@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.hadar.parkit.UI.StatisticsActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -12,41 +13,36 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
-public class CalcDistance extends AsyncTask<Object,ArrayList<Street>, ArrayList<Street>> {
+public class CalcDistance  implements CallableArr {
 
     private static final String TAG ="radar";
+    private static final int NUM_OF_THREADS =14;
     private GoogleMap mMap;
     private ArrayList<Street> streets;
-    private Activity activity;
+    private StatisticsActivity activity;
     private String stName;
     private ArrayList<Street> streetsOnRadar;
     private MarkerOptions markerOptionsDriverLocation;
     private String[] statusTypes = {"empty","available","occupied","full"};
+    private DistanceClass[] tasks;
+    private int count;
 
-
-    @Override
-    protected ArrayList<Street> doInBackground(Object... objects)
-    {
-        mMap = (GoogleMap) objects[0];
-        streets = (ArrayList<Street>) objects[1];
-        activity = (Activity) objects[2];
-        stName = (String) objects[3];
-        Log.d(TAG,"dest: "+stName);
-        streetsOnRadar = new ArrayList<>();
-        streetsOnRadar.addAll(findNearbyStreets());
-        return streetsOnRadar;
+    public  CalcDistance(GoogleMap mMap,ArrayList<Street> streets,StatisticsActivity activity,String stName) {
+       this.mMap = mMap;
+       this.streets = streets;
+       this.activity = activity;
+       this.stName = stName;
+       Log.d(TAG,"dest: "+stName);
+       streetsOnRadar = new ArrayList<>();
+       count = 0;
+       tasks = new DistanceClass[NUM_OF_THREADS];
+       findNearbyStreets(stName,activity);
     }
 
-    @Override
-    protected void onPostExecute(ArrayList<Street> streets) {
-        int status=0;
-        for(int i=0;i<streets.size();i++) {
-            Log.d(TAG,"street: "+streets.get(i).getStreet());
-            showMarker(streets.get(i), activity);
-        }
-    }
 
     public int getStatus(Street st){
         int status = 0;
@@ -77,40 +73,65 @@ public class CalcDistance extends AsyncTask<Object,ArrayList<Street>, ArrayList<
         markerOptionsDriverLocation.position(PlayerLatLng);
         markerOptionsDriverLocation.title(statusTypes[status]+" : "+st.getRate()+" %");
         markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
-        switch(status){
-            case 0:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                break;
-            case 1:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                break;
-            case 2:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                break;
-            case 3:
-                markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
-                break;
+        if(st.getStreet().equals(stName)==true){
+            markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+
+        else {
+            switch (status) {
+                case 0:
+                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                    break;
+                case 1:
+                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    break;
+                case 2:
+                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                    break;
+                case 3:
+                    markerOptionsDriverLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                    break;
+            }
         }
         mMap.addMarker(markerOptionsDriverLocation);
         Log.d(TAG,"map----done");
     }
 
-    private ArrayList<Street> findNearbyStreets(){
-
+    private void findNearbyStreets(String stName,Activity activity){
+        Street street;
         String city = "Bat Yam";
         ArrayList<Street> arr;
         arr = new ArrayList<Street>();
-        for(int i=0;i<streets.size();i++){
-            //streets.get(i).convertAll();
-            String word = streets.get(i).getStreet();
-            Log.d(TAG," "+word);
-            streets.get(i).findStreetLocation(activity,word+" st "+ city);
-            streets.get(i).calcWalkingDistance(stName,activity);
-            if(streets.get(i).getWalking_distance()<=0.005){
-                Log.d(TAG,"distance: "+streets.get(i).getWalking_distance());
-                arr.add(streets.get(i));
-            }
+
+        ExecutorService ex = Executors.newFixedThreadPool(NUM_OF_THREADS);
+        for(int i=0; i<NUM_OF_THREADS; i++) {
+            tasks[i] = new DistanceClass(streets,NUM_OF_THREADS,stName,activity,this);
+            ex.execute(tasks[i]);
         }
-        return arr;
+        if(ex.isTerminated()) {
+            ex.shutdown();
+            Log.d(TAG,"all done");
+        }
+
+    }
+
+    @Override
+    public synchronized void filterDistance(ArrayList<Street> thArr) {
+        ArrayList<Street> threadArr;
+        threadArr = new ArrayList<>();
+        streetsOnRadar.addAll(thArr);
+        count++;
+        if(count == NUM_OF_THREADS){
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i=0;i<streetsOnRadar.size();i++) {
+                        showMarker(streetsOnRadar.get(i), activity);
+                    }
+                    activity.doneLoadingPage();
+                }
+            });
+        }
     }
 }
+

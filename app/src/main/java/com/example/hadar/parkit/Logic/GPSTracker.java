@@ -58,8 +58,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
             }
-            else
-            {
+            else {
                 // for older versions
                 requestLocation();
             }

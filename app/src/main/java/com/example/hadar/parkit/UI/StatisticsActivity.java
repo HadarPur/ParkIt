@@ -44,7 +44,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private String streetName;
     private Street st;
     private AutoCompleteTextView txt;
-    private boolean isFirst=true;
+    private boolean isFirst=true, isLoading;
     private ArrayList<String> names;
     private ArrayList<Street>[] stData;
     private RelativeLayout loadingBack;
@@ -69,7 +69,6 @@ public class StatisticsActivity extends AppCompatActivity {
             names.add(stData[0].get(i).getStreet());
         }
         adapter.notifyDataSetChanged();
-
     }
 
     protected void onStart() {
@@ -87,7 +86,11 @@ public class StatisticsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        showOnMap(0, isFirst);
+        if (!isNetworkAvailable(this))
+            showConnectionInternetFailed();
+        else {
+            showOnMap(0, isFirst);
+        }
     }
 
     public int timeType(int position){
@@ -104,8 +107,8 @@ public class StatisticsActivity extends AppCompatActivity {
 
     public void findViews () {
         loadingBack=(RelativeLayout)findViewById(R.id.load);
-        loadingBack.setBackgroundColor(Color.argb(200, 165,205,253));
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        loadingBack.setBackgroundColor(Color.argb(200, 165,205,253));
         txt = (AutoCompleteTextView)findViewById(R.id.autoTxt);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -116,13 +119,16 @@ public class StatisticsActivity extends AppCompatActivity {
         bSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                streetName = txt.getText().toString();
-                String txt = spinner1.getSelectedItem().toString();
-                position = spinner1.getSelectedItemPosition();
-                Log.d(TAG," "+ txt + " position : "+position);
-                isFirst=false;
-                showOnMap(position,isFirst);
-                hideKeyboard(StatisticsActivity.this);
+                if (isLoading==false) {
+                    streetName = txt.getText().toString();
+                    String txt = spinner1.getSelectedItem().toString();
+                    position = spinner1.getSelectedItemPosition();
+                    Log.d(TAG," "+ txt + " position : "+position);
+                    isFirst=false;
+                    showOnMap(position,isFirst);
+                    hideKeyboard(StatisticsActivity.this);
+                    loadingPage();
+                }
             }
         });
     }
@@ -131,8 +137,14 @@ public class StatisticsActivity extends AppCompatActivity {
         int type;
         String city = "Bat Yam";
         if(isFirst == false) {
-            streetName +=" st "+ city;
-            st = new Street("10", "60", "20", streetName, this);
+            for(int i=0;i<streetsInfo.getStreets(position).size();i++){
+                Street street = streetsInfo.getStreets(position).get(i);
+                if(street.getStreet().equals(streetName)==true){
+                    st = street;
+                }
+            }
+            streetName +=city;
+           // st = new Street("10", "60", "20", streetName, this);
             st.findStreetLocation(this, streetName);
             type = timeType(position);
             Log.d(TAG, "( " + st.getStreetLocation().getLatitude() + " , " + st.getStreetLocation().getLongitude() + " ) ");
@@ -144,6 +156,36 @@ public class StatisticsActivity extends AppCompatActivity {
         }
     }
 
+    //massage that network isn't open
+    public void showConnectionInternetFailed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Network Connection Failed");
+        alertDialog.setMessage("Network is not enabled." +
+                "\n"+
+                "If you want to see record table you need a connection to the network");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent=new Intent(StatisticsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.show();
+    }
+
+    //check network connection
+    public static boolean isNetworkAvailable(Context ctx) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
+                || (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     //hide keyboard when search button pressed
     public static void hideKeyboard(Activity activity) {
@@ -157,15 +199,16 @@ public class StatisticsActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
     //start loading view fot the callback
     public void loadingPage() {
         loadingBack.setVisibility(View.VISIBLE);
+        isLoading=true;
     }
 
     //finish loading view fot the callback
     public void doneLoadingPage() {
         loadingBack.setVisibility(View.GONE);
+        isLoading=false;
     }
 
 

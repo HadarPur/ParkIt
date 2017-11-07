@@ -1,12 +1,6 @@
 package com.example.hadar.parkit.Logic;
 
-import android.util.Log;
-import android.widget.ArrayAdapter;
-
 import com.example.hadar.parkit.Storage.FirebaseData;
-import com.example.hadar.parkit.Storage.quaries.CallData;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class StreetsData {//implements CallData {
@@ -46,11 +40,6 @@ public class StreetsData {//implements CallData {
     public int arrSize(){
         return data.length;
     }
-
-    /*@Override //callback to the data base
-    public void performQuery(ArrayList<Street> list, int index) {
-        data[index].addAll(list);
-    }*/
 
     public interface Callback {
         void onCallback(ArrayList<Street>[] cloudData);

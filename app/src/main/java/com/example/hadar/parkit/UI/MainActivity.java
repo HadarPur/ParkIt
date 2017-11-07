@@ -28,12 +28,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG ="Main";
     Button statistics, findMyCar, findParkingSpace, aboutAs;
-    private boolean firstAsk=true, inivsible;
+    private boolean firstAsk=true, isLoading;
     private GPSTracker gpsTracker ;
     private Location startLocation;
     private StreetsData streetsInfo;
     private RelativeLayout loadingBack;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         gpsTracker = new GPSTracker(this, firstAsk);
         if (gpsTracker!=null) {
             startLocation = gpsTracker.getPosition();
-            Log.d(TAG, "location: (" + startLocation.getLatitude() + " , " + startLocation.getLongitude() + " )");
         }
 
-        if (!isNetworkAvailable(this))
+        if(!isNetworkAvailable(this)) {
             showConnectionInternetFailed();
+        }
         else {
             streetsInfo = StreetsData.getInstance();
             loadingPage();
@@ -83,8 +82,10 @@ public class MainActivity extends AppCompatActivity {
         findParkingSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inivsible==true) {
+                if (isLoading==false) {
                     Intent intent = new Intent(MainActivity.this, FindParkingSpaceActivity.class);
+                    intent.putExtra("startLocationLat", startLocation.getLatitude());
+                    intent.putExtra("startLocationLong", startLocation.getLongitude());
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         findMyCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inivsible==true) {
+                if (isLoading==false) {
                     Intent intent = new Intent(MainActivity.this, FindMyCarActivity.class);
                     intent.putExtra("startLocationLat", startLocation.getLatitude());
                     intent.putExtra("startLocationLong", startLocation.getLongitude());
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         statistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inivsible==true) {
+                if (isLoading==false) {
                     /** transformation from object to Json string **/
                     Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
                     intent.putExtra("startLocationLat", startLocation.getLatitude());
@@ -120,28 +121,13 @@ public class MainActivity extends AppCompatActivity {
         aboutAs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (inivsible==true) {
-                    Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
+                Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }
 
-    //start loading view fot the callback
-    public void loadingPage() {
-        loadingBack.setVisibility(View.VISIBLE);
-        inivsible=false;
-    }
-
-    //finish loading view fot the callback
-    public void doneLoadingPage() {
-        loadingBack.setVisibility(View.GONE);
-        inivsible=true;
-    }
-
-    //massage that GPS isn't available
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("GPS is settings");
@@ -152,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
-                finish();
             }
         });
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -174,30 +159,14 @@ public class MainActivity extends AppCompatActivity {
 
     //massage that network isn't open
     public void showConnectionInternetFailed() {
-        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Network Connection Failed");
         alertDialog.setMessage("Network is not enabled." +
                 "\n"+
-                "You need a connection to the network for this App");
+                "If you want to use this app you need a connection to the network");
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
-                startActivity(intent);
-                finish();
-            }
-        });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                finish();
-            }
-        });
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
                 finish();
             }
         });
@@ -217,4 +186,17 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    //start loading view fot the callback
+    public void loadingPage() {
+        loadingBack.setVisibility(View.VISIBLE);
+        isLoading=true;
+    }
+
+    //finish loading view fot the callback
+    public void doneLoadingPage() {
+        loadingBack.setVisibility(View.GONE);
+        isLoading=false;
+    }
+
 }

@@ -11,16 +11,10 @@ import java.util.List;
 /** contains info about single street **/
 public class Street implements Serializable {
     private static final String TAG ="STREET";
-    private String cars;
-    private String rate;
-    private String sensors;
-    private String street;
-    private int numOfCars;
-    private int numOfSensors;
-    private double occupacy;
-    private double utilityValue;
+    private String cars, rate, sensors, street;
+    private int numOfCars, numOfSensors;
+    private double occupacy, utilityValue, walking_distance;
     private UserLocation streetLocation;
-    private double walking_distance;
 
     public Street(){
     }
@@ -50,6 +44,7 @@ public class Street implements Serializable {
         UserLocation location=null;
 
         try {
+            Log.d(TAG,"name: "+name);
             address = coder.getFromLocationName(name, 5);
             if (address == null) {
                 return null;
@@ -68,12 +63,10 @@ public class Street implements Serializable {
                 String stname = streets.get(i).getThoroughfare();
                 Log.d(TAG,"street: "+stname);
             }
-
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
         return location;
     }
 
@@ -81,12 +74,12 @@ public class Street implements Serializable {
     public void calcWalkingDistance(String destination,Activity activity){
         UserLocation destinationloc;
         destinationloc=getLocation(destination,activity);
-        walking_distance = Math.sqrt((streetLocation.getLatitude()-destinationloc.getLatitude())*(streetLocation.getLatitude()-destinationloc.getLatitude()))-(streetLocation.getLongitude()-destinationloc.getLongitude())*(streetLocation.getLongitude()-destinationloc.getLongitude());
-
+        this.walking_distance = Math.sqrt((Math.pow(streetLocation.getLatitude()-destinationloc.getLatitude(),2))+
+                (Math.pow(streetLocation.getLongitude()-destinationloc.getLongitude(),2)));
     }
 
     public double getWalking_distance() {
-        return walking_distance;
+        return this.walking_distance;
     }
 
     /** calculates the utility value of each street **/
@@ -109,7 +102,7 @@ public class Street implements Serializable {
 
     public String getStreet() {
         //String city = "Bat Yam";
-        return street;//+" st "+ city;
+        return street;
     }
 
     public String getCars() {
