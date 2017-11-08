@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews ();
-        showOnSettingsAlert();
         gpsTracker = new GPSTracker(this, firstAsk);
         if(!gpsTracker.getGPSEnable()){
             showSettingsAlert();
@@ -60,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         addListenersToButtons();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showOnSettingsAlert();
     }
 
     @Override
