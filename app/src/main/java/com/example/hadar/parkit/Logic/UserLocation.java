@@ -10,6 +10,7 @@ public class UserLocation {
     private Activity activity;
     private SharedPreferencesServices service;
 
+    //c'tor
     public UserLocation(Activity activity, double latitude, double longitude){
         this.activity=activity;
         this.latitude = latitude;
@@ -17,10 +18,12 @@ public class UserLocation {
         service=new SharedPreferencesServices(activity);
     }
 
+    //getter
     public double getLongitude() {
         return longitude;
     }
 
+    //getter
     public double getLatitude() {
         return latitude;
     }
@@ -33,13 +36,15 @@ public class UserLocation {
         return parkingLatitude;
     }
 
+    //save into share preference
     public void saveParkingLocation(double lng, double lat) {
         service.saveLocationByKey(LOCATION_LGT_CODE, lng);
         service.saveLocationByKey(LOCATION_LAT_CODE, lat);
     }
 
+    //read from share preference
     public String readParkingLocation(Map map) throws IOException {
-        String street="";
+        String street="Location doesn't save";
         this.parkingLongitude=service.readLocationByKey(LOCATION_LGT_CODE);
         this.parkingLatitude=service.readLocationByKey(LOCATION_LAT_CODE);
         if (parkingLongitude!=0&&parkingLatitude!=0) {

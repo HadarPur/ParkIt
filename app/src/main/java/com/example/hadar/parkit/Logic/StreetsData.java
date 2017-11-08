@@ -3,15 +3,17 @@ package com.example.hadar.parkit.Logic;
 import com.example.hadar.parkit.Storage.FirebaseData;
 import java.util.ArrayList;
 
-public class StreetsData {//implements CallData {
+public class StreetsData {
     private static StreetsData instance;
 
+    //singleton
     public static StreetsData getInstance() {
         if (instance == null) {
             instance = new StreetsData();
         }
         return instance;
     }
+
     private static final int NUM_OF_HOURS =3;
     private static final String TAG = "CALL";
     ArrayList<Street> data []; /** each index in the list refers to a single part of the day.
@@ -41,14 +43,18 @@ public class StreetsData {//implements CallData {
         return data.length;
     }
 
+    //interface for the callback
     public interface Callback {
         void onCallback(ArrayList<Street>[] cloudData);
     }
+
+    //reading data from the cloud
     public void readData(Callback callback) {
         FirebaseData data = new FirebaseData();
         data.ReadData(callback);
     }
 
+    //set the data that read on the array
     public void setData(ArrayList<Street>[] arr) {
         initAll();
         for(int i=0;i<arr.length;i++){

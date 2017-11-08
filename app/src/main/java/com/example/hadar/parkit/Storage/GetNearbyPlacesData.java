@@ -44,7 +44,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         Log.d("GooglePlacesReadTask", "onPostExecute Exit");
     }
 
-    //
+    //se the parking lot markers on the map from near by places
     private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
         for (int i = 0; i < nearbyPlacesList.size(); i++) {
             Log.d("onPostExecute","Entered into showing locations");

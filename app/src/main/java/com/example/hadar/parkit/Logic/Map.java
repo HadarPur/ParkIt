@@ -1,6 +1,5 @@
 package com.example.hadar.parkit.Logic;
 
-
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -54,6 +53,9 @@ public class Map implements OnMapReadyCallback {
                     break;
                 case STATISTICS:
                     setMyLocationOnTheMap();
+                    break;
+                case FIND_PARKING_SPACE:
+                    setMyLocationOnTheMap();
                     String url = getUrl(latitude, longitude, "parking");
                     Object[] DataTransfer = new Object[2];
                     DataTransfer[0] = mMap;
@@ -61,9 +63,6 @@ public class Map implements OnMapReadyCallback {
                     Log.d("url: ", url);
                     GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                     getNearbyPlacesData.execute(DataTransfer);
-                    break;
-                case FIND_PARKING_SPACE:
-                    setMyLocationOnTheMap();
                     break;
             }
 
@@ -168,6 +167,14 @@ public class Map implements OnMapReadyCallback {
         //place users markers
         String street;
         mMap.clear();
+        setMyLocationOnTheMap();
+        String url = getUrl(latitude, longitude, "parking");
+        Object[] DataTransfer = new Object[2];
+        DataTransfer[0] = mMap;
+        DataTransfer[1] = url;
+        Log.d("url: ", url);
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+        getNearbyPlacesData.execute(DataTransfer);
         //to specific location
         LatLng PlayerLatLng = new LatLng(lat, lgt);
         markerOptionsDriverLocation = new MarkerOptions();
@@ -183,7 +190,7 @@ public class Map implements OnMapReadyCallback {
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(PlayerLatLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
 
         return street;
     }

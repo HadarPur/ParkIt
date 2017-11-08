@@ -2,7 +2,7 @@ package com.example.hadar.parkit.Logic;
 
 public class Comparator implements java.util.Comparator<Street>{
 
-    //comparator for the records list
+    //comparator for the parking places list
     @Override
     public int compare(Street o1, Street o2) {
         if (o1.getUtilityValue()>o2.getUtilityValue())

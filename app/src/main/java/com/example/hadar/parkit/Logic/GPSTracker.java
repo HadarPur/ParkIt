@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -56,6 +57,8 @@ public class GPSTracker extends Service implements LocationListener {
                         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION_CODE);
                         incrementCounter(PERMISSION_LOCATION_CODE);
                     }
+                    else
+                        activity.finish();
                 }
             }
             else {
@@ -113,6 +116,19 @@ public class GPSTracker extends Service implements LocationListener {
         }
     }
 
+    public void showSettingsAlert() {
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
+        alertDialog.setTitle("GPS is settings");
+        alertDialog.setMessage("GPS is not enabled. If you want to use this app you need to permit location");
+        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
     public boolean getGPSEnable(){
         return isGPSEnabled;
     }

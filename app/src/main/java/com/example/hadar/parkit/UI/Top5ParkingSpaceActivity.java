@@ -87,6 +87,7 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
         if (!isNetworkAvailable(this))
             showConnectionInternetFailed();
         else {
+            convertStreet();
             showOnMap();
         }
     }
@@ -94,9 +95,9 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
     @Override
     protected void onResume() {
         super.onResume();
-        convertStreet();
     }
 
+    //find view from xml
     public void findViews() {
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         tableFragment= (TableFrame) getSupportFragmentManager().findFragmentById(R.id.table);
@@ -104,12 +105,17 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
         loadingBack.setBackgroundColor(Color.argb(200, 165,205,253));
     }
 
+    //set marker on the map
     public void showOnMap() {
         int type;
         String city = "Bat Yam";
-        map = new Map(mapFragment, latitude, longitude, this, PROXIMITY_RADIUS, ACTIVITY);
+        Street st = new Street();
+        st.findStreetLocation(this,streetName+" "+city);
+        map = new Map(mapFragment, st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude(),
+                this, (int)radiusLength[radius], ACTIVITY);
     }
 
+    //convert street destination
     public void convertStreet() {
         int type=timeType(hour);
         allStreets=streetsInfo.getStreets(type);
@@ -117,6 +123,7 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
         findNearbyStreets(streetName);
     }
 
+    //time type on the day
     public int timeType(int time){
         int timeInTheDay = 0;
         if(time >= 0 && time<=7)
@@ -159,7 +166,7 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
         }
     }
 
-    @Override
+    @Override //calculate the radius
     public void filterDistance(ArrayList<Street> thArr) {
         ArrayList<Street> threadArr;
         threadArr = new ArrayList<>();
@@ -202,6 +209,7 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
         }
     }
 
+    //find the near by places for the automate complete
     private void findNearbyStreets(String stName){
         Street street;
         String city = "Bat Yam";

@@ -1,19 +1,13 @@
 package com.example.hadar.parkit.Logic;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.util.Log;
-
 import com.example.hadar.parkit.UI.StatisticsActivity;
-import com.example.hadar.parkit.UI.Top5ParkingSpaceActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,6 +26,7 @@ public class CalcDistance  implements CallableArr {
     private DistanceClass[] tasks;
     private int count;
 
+    //c'tor
     public  CalcDistance(GoogleMap mMap,ArrayList<Street> streets,StatisticsActivity activity,String stName) {
         this.mMap = mMap;
        this.streets = streets;
@@ -44,6 +39,7 @@ public class CalcDistance  implements CallableArr {
        findNearbyStreets(stName,activity);
     }
 
+    //set the status rate
     public int getStatus(Street st){
         int status = 0;
         Log.d(TAG,"status rate: "+st.getOccupacy());
@@ -62,10 +58,10 @@ public class CalcDistance  implements CallableArr {
         return status;
     }
 
+    //set markers by occupacy
     private void showMarker(Street st, Activity activity){
         int status=0;
         st.convertAll();
-        //st.findStreetLocation(activity,st.getStreet());
         status = getStatus(st);
         Log.d(TAG,"status : "+status);
         LatLng PlayerLatLng = new LatLng(st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude());
@@ -93,11 +89,10 @@ public class CalcDistance  implements CallableArr {
         Log.d(TAG,"map----done");
     }
 
+    //search the near by places
     private void findNearbyStreets(String stName,Activity activity){
-        Street street;
         String city = "Bat Yam";
-        ArrayList<Street> arr;
-        arr = new ArrayList<Street>();
+        ArrayList<Street> arr = new ArrayList<Street>();
 
         ExecutorService ex = Executors.newFixedThreadPool(NUM_OF_THREADS);
         for(int i=0; i<NUM_OF_THREADS; i++) {
@@ -112,7 +107,6 @@ public class CalcDistance  implements CallableArr {
 
     @Override
     public synchronized void filterDistance(ArrayList<Street> thArr) {
-       // ArrayList<Street> threadArr = new ArrayList<>();
         streetsOnRadar.addAll(thArr);
         count++;
         if(count == NUM_OF_THREADS){

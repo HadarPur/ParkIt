@@ -2,7 +2,6 @@ package com.example.hadar.parkit.Logic;
 
 import android.app.Activity;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 public class DistanceClass implements Runnable{
@@ -15,6 +14,7 @@ public class DistanceClass implements Runnable{
     private CallableArr callArr;
     private double radius;
 
+    //c'tor
     public DistanceClass(ArrayList<Street> streetsOld , int num_of_threads, String st_name, Activity activity,CallableArr callArr){
         this.streetsOld = new ArrayList<>();
         this.newStreets = new ArrayList<>();
@@ -27,6 +27,7 @@ public class DistanceClass implements Runnable{
         this.radius=500;
     }
 
+    //c'tor
     public DistanceClass(ArrayList<Street> streetsOld , int num_of_threads, String st_name, Activity activity,CallableArr callArr, double radius){
         this.streetsOld = new ArrayList<>();
         this.newStreets = new ArrayList<>();

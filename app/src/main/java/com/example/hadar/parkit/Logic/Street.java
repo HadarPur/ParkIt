@@ -18,9 +18,11 @@ public class Street implements Serializable {
     private float[] walking_distance;
     private UserLocation streetLocation;
 
+    //c'tor
     public Street(){
     }
 
+    //c'tor
     public Street(String cars, String rate, String sensors, String street, Activity activity){
         this.cars = cars;
         this.rate = rate;
@@ -28,6 +30,7 @@ public class Street implements Serializable {
         this.street = street;
     }
 
+    //convert numbers
     public void convertAll(){
         this.occupacy = Double.parseDouble(rate);
         this.numOfCars = Integer.parseInt(cars);
@@ -39,6 +42,7 @@ public class Street implements Serializable {
         streetLocation = getLocation(name,activity);
     }
 
+    //get location by name
     public UserLocation getLocation(String name, Activity activity){
         Geocoder coder = new Geocoder(activity.getApplicationContext());
         List<Address> address;
@@ -72,7 +76,7 @@ public class Street implements Serializable {
         return location;
     }
 
-
+    //calculate radius
     public void calcWalkingDistance(String destination,Activity activity){
         walking_distance=new float[1];
         UserLocation destinationloc=getLocation(destination,activity);
@@ -81,6 +85,7 @@ public class Street implements Serializable {
                 this.walking_distance);
     }
 
+    //getter
     public double getWalking_distance() {
         return this.walking_distance[0];
     }
@@ -95,6 +100,7 @@ public class Street implements Serializable {
         utilityValue=10*accupacy_Rate+5*cars_rate+2*walking_distance_norm;
     }
 
+    //getter
     public double getUtilityValue() {
         return utilityValue;
     }

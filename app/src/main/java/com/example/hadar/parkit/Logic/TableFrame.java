@@ -1,6 +1,5 @@
 package com.example.hadar.parkit.Logic;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class TableFrame extends Fragment {
@@ -33,7 +32,9 @@ public class TableFrame extends Fragment {
         streets=new ArrayList<>();
         streets.addAll(street);
         for (int i=0; i<street.size(); i++) {
-            streetsName.add("Street Name: "+street.get(i).getStreet());
+            DecimalFormat df = new DecimalFormat("#.##");
+            streetsName.add("Street Name: "+street.get(i).getStreet()+"occupation rate: "+df.format(street.get(i).getOccupacy())+"%");
+
         }
         adapter.notifyDataSetChanged();
     }

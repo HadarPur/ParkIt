@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import com.example.hadar.parkit.Logic.GPSTracker;
 import com.example.hadar.parkit.Logic.Map;
 import com.example.hadar.parkit.Logic.Street;
 import com.example.hadar.parkit.Logic.StreetsData;
@@ -40,7 +41,6 @@ public class StatisticsActivity extends AppCompatActivity {
     private Button bSearch;
     private Bundle ex;
     private int count_wait=0;
-    private double longitude, latitude;
     private String streetName;
     private Street st;
     private AutoCompleteTextView txt;
@@ -50,16 +50,32 @@ public class StatisticsActivity extends AppCompatActivity {
     private RelativeLayout loadingBack;
     private ArrayAdapter adapter;
     private ArrayList<Street> streetsOnRadar;
+    private GPSTracker gpsTracker;
+    private boolean firstAsk=false;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+
+        gpsTracker = new GPSTracker(this, firstAsk);
+        if(gpsTracker.getGPSEnable()&& gpsTracker.getPosition()!=null){
+            latitude=gpsTracker.getPosition().getLatitude();
+            longitude=gpsTracker.getPosition().getLongitude();
+            //if location wasn't enable and now it's enable
+            gpsTracker.initLocation();
+        }
+        else if (!gpsTracker.getGPSEnable()){
+            latitude=0;
+            longitude=0;
+            showSettingsAlert();
+        }
+
         findViews();
         names = new ArrayList<>();
         streetsOnRadar = new ArrayList<>();
         streetsInfo = StreetsData.getInstance();
-
         stData = streetsInfo.getData();
         adapter = new ArrayAdapter(StatisticsActivity.this, R.layout.drop_down, names);
         txt.setThreshold(2);
@@ -73,14 +89,6 @@ public class StatisticsActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        Intent intent = getIntent();
-        if (intent != null) {
-            ex = intent.getExtras();
-            if (ex != null) {
-                latitude = ex.getDouble("startLocationLat");
-                longitude = ex.getDouble("startLocationLong");
-            }
-        }
     }
 
     @Override
@@ -93,6 +101,7 @@ public class StatisticsActivity extends AppCompatActivity {
         }
     }
 
+    //time type on the day
     public int timeType(int position){
         int time = 0;
         if(position >= 0 && position<=7)
@@ -105,6 +114,7 @@ public class StatisticsActivity extends AppCompatActivity {
         return time;
     }
 
+    //find views from xml with listeners
     public void findViews () {
         loadingBack=(RelativeLayout)findViewById(R.id.load);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -121,18 +131,25 @@ public class StatisticsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isLoading==false) {
                     streetName = txt.getText().toString();
-                    String txt = spinner1.getSelectedItem().toString();
-                    position = spinner1.getSelectedItemPosition();
-                    Log.d(TAG," "+ txt + " position : "+position);
-                    isFirst=false;
-                    showOnMap(position,isFirst);
-                    hideKeyboard(StatisticsActivity.this);
-                    loadingPage();
+                    if(names.contains(streetName)) {
+                        String txt = spinner1.getSelectedItem().toString();
+                        position = spinner1.getSelectedItemPosition();
+                        Log.d(TAG, " " + txt + " position : " + position);
+                        isFirst = false;
+                        showOnMap(position, isFirst);
+                        hideKeyboard(StatisticsActivity.this);
+                        loadingPage();
+                    }
+
+                    else{
+                        checkInput();
+                    }
                 }
             }
         });
     }
 
+    //set markers on map
     public void showOnMap(int position,boolean isFirst){
         int type;
         String city = "Bat Yam";
@@ -163,7 +180,7 @@ public class StatisticsActivity extends AppCompatActivity {
         alertDialog.setTitle("Network Connection Failed");
         alertDialog.setMessage("Network is not enabled." +
                 "\n"+
-                "If you want to see record table you need a connection to the network");
+                "If you want to use this app you need a connection to the network");
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -210,6 +227,38 @@ public class StatisticsActivity extends AppCompatActivity {
     public void doneLoadingPage() {
         loadingBack.setVisibility(View.GONE);
         isLoading=false;
+    }
+
+    //input exception
+    public void checkInput(){
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
+        alertDialog.setTitle("invalid input");
+        alertDialog.setMessage("invalid input" +
+                "\n"+
+                "couldn't found the street In Bat Yam");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //finish();
+            }
+        });
+        alertDialog.show();
+    }
+
+    //not to the user
+    public void showSettingsAlert() {
+        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
+        alertDialog.setTitle("GPS is settings");
+        alertDialog.setMessage("GPS is not enabled. If you want to use this app you need to permit location");
+        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
 
