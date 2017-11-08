@@ -127,7 +127,7 @@ public class FindMyCarActivity extends AppCompatActivity {
     }
 
 
-    //massage that network isn't open
+    //alert network not available
     public void showConnectionInternetFailed() {
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
         alertDialog.setTitle("Network Connection Failed");

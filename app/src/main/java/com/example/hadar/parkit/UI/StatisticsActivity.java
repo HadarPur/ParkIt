@@ -174,7 +174,7 @@ public class StatisticsActivity extends AppCompatActivity {
         }
     }
 
-    //massage that network isn't open
+    //alert network not available
     public void showConnectionInternetFailed() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Network Connection Failed");
@@ -245,7 +245,7 @@ public class StatisticsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    //not to the user
+    //note to the user
     public void showSettingsAlert() {
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
         alertDialog.setTitle("GPS is settings");

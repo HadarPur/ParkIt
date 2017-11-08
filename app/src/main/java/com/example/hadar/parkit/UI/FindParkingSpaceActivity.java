@@ -126,7 +126,7 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    //not to the user
+    //note to the user
     public void showSettingsAlert() {
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
         alertDialog.setTitle("GPS is settings");
