@@ -20,7 +20,6 @@ import com.example.hadar.parkit.Logic.StreetsData;
 import com.example.hadar.parkit.R;
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG ="Main";
     private boolean firstAsk=true, isLoading;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews ();
+        showOnSettingsAlert();
         gpsTracker = new GPSTracker(this, firstAsk);
         if(!gpsTracker.getGPSEnable()){
             showSettingsAlert();
@@ -62,9 +62,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        showOnSettingsAlert();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override

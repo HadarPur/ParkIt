@@ -6,6 +6,7 @@ import android.location.Geocoder;
 import android.util.Log;
 import com.example.hadar.parkit.R;
 import com.example.hadar.parkit.Storage.GetNearbyPlacesData;
+import com.example.hadar.parkit.UI.FindMyCarActivity;
 import com.example.hadar.parkit.UI.StatisticsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -101,7 +102,11 @@ public class Map implements OnMapReadyCallback {
 
         //Place current location marker
         markerOptionsMyLocation.position(latLng);
-        markerOptionsMyLocation.title("Current Position");
+        if (activity== FIND_CAR)
+            markerOptionsMyLocation.title("Current Position");
+        else if (activity==FIND_PARKING_SPACE)
+            markerOptionsMyLocation.title("Your Destination");
+
 
         markerOptionsMyLocation.snippet("Location: " + street);
         mMap.addMarker(markerOptionsMyLocation);
