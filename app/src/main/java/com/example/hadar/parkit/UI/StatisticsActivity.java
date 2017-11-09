@@ -82,7 +82,8 @@ public class StatisticsActivity extends AppCompatActivity {
         txt.setAdapter(adapter);
         Log.d(TAG,"array size: "+stData[0].size());
         for(int i=0;i<stData[0].size();i++){
-            names.add(stData[0].get(i).getStreet());
+            if (!names.contains(stData[0].get(i).getStreet()))
+                names.add(stData[0].get(i).getStreet());
         }
         adapter.notifyDataSetChanged();
     }

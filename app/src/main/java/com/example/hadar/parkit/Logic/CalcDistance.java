@@ -7,6 +7,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,13 +63,14 @@ public class CalcDistance  implements CallableArr {
     //set markers by occupacy
     private void showMarker(Street st, Activity activity){
         int status=0;
+        DecimalFormat df = new DecimalFormat("#.##");
         st.convertAll();
         status = getStatus(st);
         Log.d(TAG,"status : "+status);
         LatLng PlayerLatLng = new LatLng(st.getStreetLocation().getLatitude(), st.getStreetLocation().getLongitude());
         markerOptionsDriverLocation = new MarkerOptions();
         markerOptionsDriverLocation.position(PlayerLatLng);
-        markerOptionsDriverLocation.title(statusTypes[status]+" : "+st.getRate()+" %");
+        markerOptionsDriverLocation.title(statusTypes[status]+" : "+df.format(Double.parseDouble(st.getRate()))+" %");
         markerOptionsDriverLocation.snippet("Location: " + st.getStreet());
 
         switch (status) {

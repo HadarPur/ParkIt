@@ -75,14 +75,14 @@ public class Map implements OnMapReadyCallback {
 
     //show markers statistics on the map
     public void showStatistics(ArrayList<Street> streets, StatisticsActivity act, double latitude, double longitude, String name) {
-        this.destLatitude=latitude;
-        this.destLongitude=longitude;
-        try {
-            setDestLocationOnTheMap();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+//        this.destLatitude=latitude;
+//        this.destLongitude=longitude;
+//        try {
+//            setDestLocationOnTheMap();
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
         Log.d(TAG,"markers : "+streets.size());
 
         CalcDistance calcOnRadius = new CalcDistance(mMap,streets,act,name);
@@ -102,7 +102,7 @@ public class Map implements OnMapReadyCallback {
 
         //Place current location marker
         markerOptionsMyLocation.position(latLng);
-        if (activity== FIND_CAR)
+        if (activity== FIND_CAR || activity==STATISTICS)
             markerOptionsMyLocation.title("Current Position");
         else if (activity==FIND_PARKING_SPACE)
             markerOptionsMyLocation.title("Your Destination");
@@ -116,29 +116,29 @@ public class Map implements OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
-    //set user location on the map
-    public void setDestLocationOnTheMap() throws IOException{
-        setMyLocationOnTheMap();
-        //Place current location marker
-        LatLng latLng = new LatLng(destLatitude, destLongitude);
-        markerOptionsMyLocation = new MarkerOptions();
-
-        //get street name
-        String street= getLocationName(destLatitude, destLongitude);
-
-        //Place current location marker
-        markerOptionsMyLocation.position(latLng);
-        markerOptionsMyLocation.title("Your Destination");
-
-        markerOptionsMyLocation.snippet("Location: " + street);
-        markerOptionsMyLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-        mMap.addMarker(markerOptionsMyLocation);
-
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-    }
+//    //set user location on the map
+//    public void setDestLocationOnTheMap() throws IOException{
+//        setMyLocationOnTheMap();
+//        //Place current location marker
+//        LatLng latLng = new LatLng(destLatitude, destLongitude);
+//        markerOptionsMyLocation = new MarkerOptions();
+//
+//        //get street name
+//        String street= getLocationName(destLatitude, destLongitude);
+//
+//        //Place current location marker
+//        markerOptionsMyLocation.position(latLng);
+//        markerOptionsMyLocation.title("Your Destination");
+//
+//        markerOptionsMyLocation.snippet("Location: " + street);
+//        markerOptionsMyLocation.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+//
+//        mMap.addMarker(markerOptionsMyLocation);
+//
+//        //move map camera
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+//    }
 
 
     //set marker with car's location on the map
