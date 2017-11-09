@@ -28,10 +28,12 @@ public class UserLocation {
         return latitude;
     }
 
+    //getter
     public double getParkingLongitude() {
         return parkingLongitude;
     }
 
+    //getter
     public double getParkingLatitude() {
         return parkingLatitude;
     }

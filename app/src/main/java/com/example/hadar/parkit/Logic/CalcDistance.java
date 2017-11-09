@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public class CalcDistance  implements CallableArr {
 
     private static final String TAG ="radar";
@@ -60,7 +59,7 @@ public class CalcDistance  implements CallableArr {
         return status;
     }
 
-    //set markers by occupacy
+    //set markers by occupancy
     private void showMarker(Street st, Activity activity){
         int status=0;
         DecimalFormat df = new DecimalFormat("#.##");

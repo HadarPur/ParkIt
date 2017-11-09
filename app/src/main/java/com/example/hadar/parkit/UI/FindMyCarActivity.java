@@ -43,7 +43,6 @@ public class FindMyCarActivity extends AppCompatActivity {
         else if (!gpsTracker.getGPSEnable()){
             latitude=0;
             longitude=0;
-            showSettingsAlert();
         }
         findViews();
         addListeners();
@@ -108,22 +107,6 @@ public class FindMyCarActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }
-
-    //note to the user
-    public void showSettingsAlert() {
-        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
-        alertDialog.setTitle("GPS is settings");
-        alertDialog.setMessage("GPS is not enabled. If you want to use this app you need to permit location");
-        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
     }
 
 
