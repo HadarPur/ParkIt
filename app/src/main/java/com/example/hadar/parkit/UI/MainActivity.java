@@ -130,9 +130,11 @@ public class MainActivity extends AppCompatActivity {
         aboutAs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                if (isLoading==false) {
+                    Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
             }
         });
     }

@@ -33,7 +33,7 @@ public class TableFrame extends Fragment {
         streets.addAll(street);
         for (int i=0; i<street.size(); i++) {
             DecimalFormat df = new DecimalFormat("#.##");
-            streetsName.add("Street Name: "+street.get(i).getStreet()+"occupation rate: "+df.format(street.get(i).getOccupacy())+"%");
+            streetsName.add("Street Name: "+street.get(i).getStreet()+"Occupation rate: "+df.format(street.get(i).getOccupacy())+"%");
 
         }
         adapter.notifyDataSetChanged();

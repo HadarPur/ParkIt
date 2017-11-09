@@ -79,8 +79,6 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
             if (ex != null) {
                 radius=ex.getInt("Radius");
                 streetName=ex.getString("Street");
-                latitude = ex.getDouble("startLocationLat");
-                longitude = ex.getDouble("startLocationLong");
             }
         }
 
@@ -183,9 +181,11 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
                         Log.d(TAG,"Utility:" +onRadarStreets.get(i).getUtilityValue());
                     }
                     Collections.sort(onRadarStreets, new Comparator());
-                    for(int i=0; i<5 ;i++) {
-                        top5Streets.add(onRadarStreets.get(i));
-                        Log.d(TAG,(i+1)+"top5:" +top5Streets.get(i).getUtilityValue());
+                    int i=0;
+                    while (top5Streets.size()<5) {
+                        if (!top5Streets.contains(onRadarStreets.get(i)))
+                            top5Streets.add(onRadarStreets.get(i));
+                        i++;
                     }
                     tableFragment.setList(top5Streets);
                     list=tableFragment.getList();
@@ -194,8 +194,6 @@ public class Top5ParkingSpaceActivity extends AppCompatActivity implements Calla
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             try {
-                                Log.d(TAG,"lat:" +tableFragment.getArray().get(position).getStreetLocation().getLatitude());
-                                Log.d(TAG,"long:" +tableFragment.getArray().get(position).getStreetLocation().getLongitude());
                                 map.setMarkersOnMap(tableFragment.getArray().get(position).getStreetLocation().getLongitude(),
                                         tableFragment.getArray().get(position).getStreetLocation().getLatitude());
                             }

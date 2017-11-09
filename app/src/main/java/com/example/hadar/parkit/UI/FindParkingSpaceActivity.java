@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
-import com.example.hadar.parkit.Logic.GPSTracker;
 import com.example.hadar.parkit.Logic.Street;
 import com.example.hadar.parkit.Logic.StreetsData;
 import com.example.hadar.parkit.R;
@@ -29,28 +28,12 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
     private Street st;
     private ArrayList<Street>[] stData;
     private ArrayAdapter adapter;
-    private GPSTracker gpsTracker;
-    private boolean firstAsk=false;
-    private double latitude, longitude;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_parking_space);
-
-        gpsTracker = new GPSTracker(this, firstAsk);
-        if(gpsTracker.getGPSEnable()&& gpsTracker.getPosition()!=null){
-            latitude=gpsTracker.getPosition().getLatitude();
-            longitude=gpsTracker.getPosition().getLongitude();
-            //if location wasn't enable and now it's enable
-            gpsTracker.initLocation();
-        }
-        else if (!gpsTracker.getGPSEnable()){
-            latitude=0;
-            longitude=0;
-            showSettingsAlert();
-        }
 
         findViews();
         names = new ArrayList<>();
@@ -60,7 +43,8 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
         txt.setThreshold(2);
         txt.setAdapter(adapter);
         for(int i=0;i<stData[0].size();i++){
-            names.add(stData[0].get(i).getStreet());
+            if (!names.contains(stData[0].get(i).getStreet()))
+                names.add(stData[0].get(i).getStreet());
         }
         adapter.notifyDataSetChanged();
     }
@@ -89,21 +73,15 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 streetName = txt.getText().toString();
                 if(names.contains(streetName)) {
-                    //String txt = spinner.getSelectedItem().toString();
                     radius = spinner.getSelectedItemPosition();
-                    //Log.d(TAG," "+ txt + " position : "+position);
                     isFirst = false;
-                    //showOnMap(position,isFirst);
                     Intent intent = new Intent(FindParkingSpaceActivity.this, Top5ParkingSpaceActivity.class);
                     intent.putExtra("Radius", radius);
                     intent.putExtra("Street", streetName);
-                    intent.putExtra("startLocationLat", latitude);
-                    intent.putExtra("startLocationLong", longitude);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
-
-                else{
+                else {
                     checkInput();
                 }
             }
@@ -121,22 +99,6 @@ public class FindParkingSpaceActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //finish();
-            }
-        });
-        alertDialog.show();
-    }
-
-    //note to the user
-    public void showSettingsAlert() {
-        android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(this);
-        alertDialog.setTitle("GPS is settings");
-        alertDialog.setMessage("GPS is not enabled. If you want to use this app you need to permit location");
-        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                dialog.cancel();
             }
         });
         alertDialog.show();
