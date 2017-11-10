@@ -58,7 +58,7 @@ public class DistanceClass implements Runnable{
             String word = street.getStreet();
             street.findStreetLocation(activity, word + " st " + city);
             street.calcWalkingDistance(st_name, activity);
-            if (street.getWalking_distance() <= radius) {
+            if (street.getWalking_distance() <= radius && street.getNumOfCars()<street.getNumOfSensors()) {
                 Log.d(TAG, "distance: " + street.getWalking_distance());
                 newStreets.add(street);
             }
@@ -69,6 +69,7 @@ public class DistanceClass implements Runnable{
         Log.d(TAG,"size: "+newStreets.size());
     }
 
+    //getter
     public ArrayList<Street> getNewStreets() {
         return newStreets;
     }

@@ -112,44 +112,63 @@ public class Street implements Serializable {
         return norm;
     }
 
+    //getter
     public String getStreet() {
         return street;
     }
 
+    //getter
     public String getCars() {
         return cars;
     }
 
+    //getter
     public String getRate() {
         return rate;
     }
 
+    //getter
     public String getSensors() {
         return sensors;
     }
 
+    //getter
     public UserLocation getStreetLocation() {
         return streetLocation;
     }
 
+    //setter
     public void setRate(String rate) {
         this.rate = rate;
     }
 
+    //setter
     public void setSensors(String sensors) {
         this.sensors = sensors;
     }
 
+    //setter
     public void setStreet(String street) {
         this.street = street;
     }
 
+    //setter
     public void setCars(String cars) {
         this.cars = cars;
     }
 
+    //getter
     public double getOccupacy() {
         return this.occupacy;
     }
 
+    //getter
+    public int getNumOfCars() {
+        return numOfCars;
+    }
+
+    //getter
+    public int getNumOfSensors() {
+        return numOfSensors;
+    }
 }
