@@ -18,3 +18,8 @@ You can save your last parking location with the button "save" and search for yo
 The button reset will show you your current location.
 
 Park it, parking fast and parking light.
+
+## App design:
+
+<img src="https://github.com/HadarPur/ParkItAndroid/blob/master/Wireframe.png" />
+<img src="https://github.com/HadarPur/ParkItAndroid/blob/master/Diagram.png" />
