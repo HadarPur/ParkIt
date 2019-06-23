@@ -22,4 +22,7 @@ Park it, parking fast and parking light.
 ## App design:
 
 <img src="https://github.com/HadarPur/ParkItAndroid/blob/master/Wireframe.png" />
+
+## App flow:
+
 <img src="https://github.com/HadarPur/ParkItAndroid/blob/master/Diagram.png" />
